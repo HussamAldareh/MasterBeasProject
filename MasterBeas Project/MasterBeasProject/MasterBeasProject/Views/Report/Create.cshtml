@@ -1,0 +1,95 @@
+﻿@model MasterBeasProject.Models.InspectionReport
+@{
+    ViewData["Title"] = "Create Inspection Report";
+    var booking = ViewBag.Booking as MasterBeasProject.Models.Booking;
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h5 class="mb-0">Inspection Report</h5>
+                <small class="text-muted">
+                    @booking?.Client?.FullName — @booking?.PropertyAddress
+                </small>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                    <input asp-for="BookingId" type="hidden" />
+
+                    <!-- Structural -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Structural Condition</label>
+                        <select asp-for="StructuralCondition" class="form-select"
+                                asp-items="Html.GetEnumSelectList<MasterBeasProject.Models.ConditionStatus>()"></select>
+                        <textarea asp-for="StructuralNotes" class="form-control mt-2" rows="2" placeholder="Notes..."></textarea>
+                    </div>
+
+                    <!-- Electrical -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Electrical Condition</label>
+                        <select asp-for="ElectricalCondition" class="form-select"
+                                asp-items="Html.GetEnumSelectList<MasterBeasProject.Models.ConditionStatus>()"></select>
+                        <textarea asp-for="ElectricalNotes" class="form-control mt-2" rows="2" placeholder="Notes..."></textarea>
+                    </div>
+
+                    <!-- Plumbing -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Plumbing Condition</label>
+                        <select asp-for="PlumbingCondition" class="form-select"
+                                asp-items="Html.GetEnumSelectList<MasterBeasProject.Models.ConditionStatus>()"></select>
+                        <textarea asp-for="PlumbingNotes" class="form-control mt-2" rows="2" placeholder="Notes..."></textarea>
+                    </div>
+
+                    <!-- Insulation -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Insulation & Moisture</label>
+                        <select asp-for="InsulationCondition" class="form-select"
+                                asp-items="Html.GetEnumSelectList<MasterBeasProject.Models.ConditionStatus>()"></select>
+                        <textarea asp-for="InsulationNotes" class="form-control mt-2" rows="2" placeholder="Notes..."></textarea>
+                    </div>
+
+                    <!-- Finishing -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Finishing Condition</label>
+                        <select asp-for="FinishingCondition" class="form-select"
+                                asp-items="Html.GetEnumSelectList<MasterBeasProject.Models.ConditionStatus>()"></select>
+                        <textarea asp-for="FinishingNotes" class="form-control mt-2" rows="2" placeholder="Notes..."></textarea>
+                    </div>
+
+                    <!-- Overall Score -->
+                    <div class="mb-3">
+                        <label asp-for="OverallScore" class="form-label fw-bold"></label>
+                        <input asp-for="OverallScore" type="number" class="form-control" min="0" max="100" />
+                        <span asp-validation-for="OverallScore" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Summary -->
+                    <div class="mb-3">
+                        <label asp-for="Summary" class="form-label fw-bold"></label>
+                        <textarea asp-for="Summary" class="form-control" rows="3"
+                                  placeholder="Overall summary and recommendations..."></textarea>
+                        <span asp-validation-for="Summary" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Images -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Inspection Photos (max 10)</label>
+                        <input type="file" name="images" class="form-control"
+                               accept="image/jpeg,image/png,image/webp" multiple />
+                        <small class="text-muted">Max 5MB per image. JPG, PNG, or WebP.</small>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-lg">Submit Report</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

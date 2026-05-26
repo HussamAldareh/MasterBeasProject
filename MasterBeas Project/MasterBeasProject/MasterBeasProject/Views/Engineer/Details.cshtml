@@ -1,0 +1,100 @@
+﻿@model MasterBeasProject.Models.EngineerProfile
+@{
+    ViewData["Title"] = "Engineer Details";
+}
+
+<div class="row">
+    <!-- Engineer Profile -->
+    <div class="col-md-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body text-center">
+                @if (!string.IsNullOrEmpty(Model.User?.ProfileImageUrl))
+                {
+                    <img src="@Model.User.ProfileImageUrl"
+                         class="rounded-circle mb-3"
+                         style="width:100px;height:100px;object-fit:cover;" />
+                }
+                else
+                {
+                    <div class="rounded-circle bg-secondary mx-auto mb-3 d-flex align-items-center justify-content-center text-white"
+                         style="width:100px;height:100px;font-size:36px;">
+                        @Model.User?.FullName?.FirstOrDefault()
+                    </div>
+                }
+                <h4>@Model.User?.FullName</h4>
+                <p class="text-muted">@Model.Specialization</p>
+                <hr />
+                <ul class="list-unstyled text-start">
+                    <li class="mb-2"><i class="bi bi-briefcase me-2"></i>@Model.YearsOfExperience years experience</li>
+                    <li class="mb-2"><i class="bi bi-cash me-2"></i>@Model.InspectionPrice JD per inspection</li>
+                    <li class="mb-2"><i class="bi bi-star-fill text-warning me-2"></i>@Model.AverageRating.ToString("0.0") / 5 (@Model.TotalReviews reviews)</li>
+                    @if (!string.IsNullOrEmpty(Model.LicenseNumber))
+                    {
+                        <li class="mb-2"><i class="bi bi-patch-check me-2"></i>License: @Model.LicenseNumber</li>
+                    }
+                    <li>
+                        @if (Model.IsAvailable)
+                        {
+                            <span class="badge bg-success">Available</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Not Available</span>
+                        }
+                    </li>
+                </ul>
+                @if (!string.IsNullOrEmpty(Model.Bio))
+                {
+                    <p class="text-muted small mt-3">@Model.Bio</p>
+                }
+            </div>
+        </div>
+
+        @if (Model.IsAvailable)
+        {
+            <a asp-controller="Booking" asp-action="Create" asp-route-engineerId="@Model.Id"
+               class="btn btn-primary w-100">Book Inspection</a>
+        }
+        else
+        {
+            <button class="btn btn-secondary w-100" disabled>Not Available</button>
+        }
+    </div>
+
+    <!-- Reviews -->
+    <div class="col-md-8">
+        <h4 class="mb-3">Client Reviews</h4>
+        @if (!Model.Reviews.Any())
+        {
+            <div class="alert alert-light">No reviews yet.</div>
+        }
+        else
+        {
+            @foreach (var review in Model.Reviews.OrderByDescending(r => r.CreatedAt))
+            {
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <strong>@review.Client?.FullName</strong>
+                            <small class="text-muted">@review.CreatedAt.ToString("MMM dd, yyyy")</small>
+                        </div>
+                        <div class="text-warning my-1">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                <i class="bi @(i <= review.Rating ? "bi-star-fill" : "bi-star")"></i>
+                            }
+                        </div>
+                        @if (!string.IsNullOrEmpty(review.Comment))
+                        {
+                            <p class="mb-0 text-muted">@review.Comment</p>
+                        }
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-action="Index" class="btn btn-outline-secondary">Back to Engineers</a>
+</div>

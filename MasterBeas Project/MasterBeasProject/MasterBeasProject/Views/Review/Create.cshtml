@@ -1,0 +1,77 @@
+﻿@model MasterBeasProject.Models.Review
+@{
+    ViewData["Title"] = "Rate Engineer";
+    var booking = ViewBag.Booking as MasterBeasProject.Models.Booking;
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h5 class="mb-0">Rate Your Engineer</h5>
+                <small class="text-muted">@booking?.EngineerProfile?.User?.FullName — @booking?.PropertyAddress</small>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                    <input asp-for="BookingId" type="hidden" />
+                    <input asp-for="EngineerProfileId" type="hidden" />
+
+                    <!-- Star Rating -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Rating</label>
+                        <div class="d-flex gap-2 fs-2" id="starContainer">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                <i class="bi bi-star star-btn" data-value="@i"
+                                   style="cursor:pointer;color:#ccc;"></i>
+                            }
+                        </div>
+                        <input asp-for="Rating" type="hidden" id="ratingInput" />
+                        <span asp-validation-for="Rating" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Comment" class="form-label fw-bold"></label>
+                        <textarea asp-for="Comment" class="form-control" rows="4"
+                                  placeholder="Share your experience with this engineer..."></textarea>
+                        <span asp-validation-for="Comment" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-warning btn-lg">Submit Review</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const stars = document.querySelectorAll('.star-btn');
+        const ratingInput = document.getElementById('ratingInput');
+
+        stars.forEach(star => {
+            star.addEventListener('mouseover', function () {
+                highlightStars(this.dataset.value);
+            });
+            star.addEventListener('mouseout', function () {
+                highlightStars(ratingInput.value || 0);
+            });
+            star.addEventListener('click', function () {
+                ratingInput.value = this.dataset.value;
+                highlightStars(this.dataset.value);
+            });
+        });
+
+        function highlightStars(value) {
+            stars.forEach(s => {
+                s.style.color = s.dataset.value <= value ? '#ffc107' : '#ccc';
+                s.classList.toggle('bi-star-fill', s.dataset.value <= value);
+                s.classList.toggle('bi-star', s.dataset.value > value);
+            });
+        }
+    </script>
+}

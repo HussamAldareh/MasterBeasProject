@@ -1,0 +1,81 @@
+﻿@model IEnumerable<MasterBeasProject.Models.EngineerProfile>
+@{
+    ViewData["Title"] = "Engineers";
+}
+
+<h2 class="mb-4">Available Engineers</h2>
+
+<!-- Filter Form -->
+<form method="get" class="row g-3 mb-4">
+    <div class="col-md-4">
+        <input type="text" name="specialization" value="@ViewBag.Specialization"
+               class="form-control" placeholder="Specialization (e.g. Civil)" />
+    </div>
+    <div class="col-md-3">
+        <input type="number" name="maxPrice" value="@ViewBag.MaxPrice"
+               class="form-control" placeholder="Max Price (JD)" min="0" />
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Filter</button>
+    </div>
+    <div class="col-md-2">
+        <a asp-action="Index" class="btn btn-outline-secondary w-100">Clear</a>
+    </div>
+</form>
+
+<!-- Engineers List -->
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No engineers found matching your criteria.</div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var engineer in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <!-- Profile Image + Name -->
+                        <div class="d-flex align-items-center mb-3">
+                            @if (!string.IsNullOrEmpty(engineer.User?.ProfileImageUrl))
+                            {
+                                <img src="@engineer.User.ProfileImageUrl"
+                                     class="rounded-circle me-3"
+                                     style="width:55px;height:55px;object-fit:cover;" />
+                            }
+                            else
+                            {
+                                <div class="rounded-circle bg-secondary me-3 d-flex align-items-center justify-content-center text-white"
+                                     style="width:55px;height:55px;font-size:20px;">
+                                    @engineer.User?.FullName?.FirstOrDefault()
+                                </div>
+                            }
+                            <div>
+                                <h5 class="mb-0">@engineer.User?.FullName</h5>
+                                <small class="text-muted">@engineer.Specialization</small>
+                            </div>
+                        </div>
+
+                        <!-- Details -->
+                        <ul class="list-unstyled mb-3">
+                            <li><i class="bi bi-briefcase"></i> @engineer.YearsOfExperience years experience</li>
+                            <li><i class="bi bi-star-fill text-warning"></i> @engineer.AverageRating.ToString("0.0") (@engineer.TotalReviews reviews)</li>
+                            <li><i class="bi bi-cash"></i> @engineer.InspectionPrice JD</li>
+                        </ul>
+
+                        @if (!string.IsNullOrEmpty(engineer.Bio))
+                        {
+                            <p class="text-muted small">@(engineer.Bio.Length > 80 ? engineer.Bio.Substring(0, 80) + "..." : engineer.Bio)</p>
+                        }
+                    </div>
+
+                    <div class="card-footer bg-white border-0">
+                        <a asp-action="Details" asp-route-id="@engineer.Id"
+                           class="btn btn-outline-primary w-100">View Profile & Book</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

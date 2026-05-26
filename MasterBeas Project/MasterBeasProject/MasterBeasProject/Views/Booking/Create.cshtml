@@ -1,0 +1,204 @@
+﻿@model MasterBeasProject.Models.PropertyDetails
+@{
+    ViewData["Title"] = "Book Inspection";
+    var engineer = ViewBag.Engineer as MasterBeasProject.Models.EngineerProfile;
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">@TempData["Success"]</div>
+        }
+
+        <!-- Engineer Info -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-body d-flex align-items-center gap-3">
+                @if (!string.IsNullOrEmpty(engineer?.User?.ProfileImageUrl))
+                {
+                    <img src="@engineer.User.ProfileImageUrl"
+                         class="rounded-circle"
+                         style="width:60px;height:60px;object-fit:cover;" />
+                }
+                else
+                {
+                    <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white"
+                         style="width:60px;height:60px;font-size:22px;">
+                        @engineer?.User?.FullName?.FirstOrDefault()
+                    </div>
+                }
+                <div>
+                    <h5 class="mb-0">@engineer?.User?.FullName</h5>
+                    <small class="text-muted">@engineer?.Specialization</small>
+                    <div class="text-warning">
+                        <i class="bi bi-star-fill"></i> @engineer?.AverageRating.ToString("0.0")
+                        <span class="text-muted ms-2">@engineer?.InspectionPrice JD</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Form -->
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h5 class="mb-0">Inspection Request Details</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" asp-route-engineerId="@ViewBag.EngineerId" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <!-- Google Maps -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Property Address</label>
+                        <input type="text" name="propertyAddress" class="form-control"
+                               placeholder="e.g. Al-Rabiah, Amman, near..."
+                               required minlength="10" maxlength="300" />
+                        <input type="hidden" name="latitude" value="" />
+                        <input type="hidden" name="longitude" value="" />
+                        <small class="text-muted">Enter the full address manually.</small>
+                    </div>
+
+                    <!-- Inspection Date -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Preferred Inspection Date</label>
+                        <input type="datetime-local" name="inspectionDate" class="form-control"
+                               min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" required />
+                    </div>
+
+                    <hr />
+                    <h6 class="mb-3">Property Details</h6>
+
+                    <!-- Property Type -->
+                    <div class="mb-3">
+                        <label asp-for="PropertyType" class="form-label"></label>
+                        <select asp-for="PropertyType" class="form-select"
+                                asp-items="Html.GetEnumSelectList<MasterBeasProject.Models.PropertyType>()">
+                        </select>
+                        <span asp-validation-for="PropertyType" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="Area" class="form-label"></label>
+                            <div class="input-group">
+                                <input asp-for="Area" type="number" class="form-control" min="20" step="0.5" />
+                                <span class="input-group-text">m²</span>
+                            </div>
+                            <span asp-validation-for="Area" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="FloorNumber" class="form-label"></label>
+                            <input asp-for="FloorNumber" type="number" class="form-control" min="0" />
+                            <span asp-validation-for="FloorNumber" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="BuildingAge" class="form-label"></label>
+                            <input asp-for="BuildingAge" type="number" class="form-control" min="1" />
+                            <span asp-validation-for="BuildingAge" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Bedrooms" class="form-label"></label>
+                            <input asp-for="Bedrooms" type="number" class="form-control" min="1" />
+                            <span asp-validation-for="Bedrooms" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Bathrooms" class="form-label"></label>
+                            <input asp-for="Bathrooms" type="number" class="form-control" min="1" />
+                            <span asp-validation-for="Bathrooms" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input asp-for="HasElevator" class="form-check-input" type="checkbox" />
+                                <label asp-for="HasElevator" class="form-check-label"></label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input asp-for="HasParking" class="form-check-input" type="checkbox" />
+                                <label asp-for="HasParking" class="form-check-label"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="AdditionalDescription" class="form-label"></label>
+                        <textarea asp-for="AdditionalDescription" class="form-control" rows="3"
+                                  placeholder="Any additional info about the property..."></textarea>
+                        <span asp-validation-for="AdditionalDescription" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="mb-4">
+                        <label class="form-label">Additional Notes (optional)</label>
+                        <textarea name="notes" class="form-control" rows="2"
+                                  placeholder="Any special requests or notes for the engineer..."></textarea>
+                    </div>
+
+                    <!-- Price Summary -->
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle me-2"></i>
+                        Inspection fee: <strong>@engineer?.InspectionPrice JD</strong>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">Submit Booking Request</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://maps.googleapis.com/maps/api/js?key=@(System.Configuration.ConfigurationManager.AppSettings["GoogleMaps:ApiKey"] ?? "YOUR_API_KEY")&libraries=places&callback=initMap" async defer></script>
+    <script>
+        let map, marker, geocoder;
+
+        function initMap() {
+            const jordan = { lat: 31.9454, lng: 35.9284 };
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: jordan,
+                zoom: 10
+            });
+            geocoder = new google.maps.Geocoder();
+
+            const input = document.getElementById("addressInput");
+            const autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.bindTo("bounds", map);
+
+            autocomplete.addListener("place_changed", function () {
+                const place = autocomplete.getPlace();
+                if (!place.geometry) return;
+
+                map.setCenter(place.geometry.location);
+                map.setZoom(15);
+                placeMarker(place.geometry.location);
+                input.value = place.formatted_address;
+            });
+
+            map.addListener("click", function (e) {
+                placeMarker(e.latLng);
+                geocoder.geocode({ location: e.latLng }, function (results, status) {
+                    if (status === "OK" && results[0]) {
+                        input.value = results[0].formatted_address;
+                    }
+                });
+            });
+        }
+
+        function placeMarker(location) {
+            if (marker) marker.setMap(null);
+            marker = new google.maps.Marker({ position: location, map: map });
+            document.getElementById("latInput").value = location.lat();
+            document.getElementById("lngInput").value = location.lng();
+        }
+    </script>
+}
