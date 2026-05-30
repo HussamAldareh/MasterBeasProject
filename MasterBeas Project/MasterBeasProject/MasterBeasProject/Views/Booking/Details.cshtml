@@ -109,6 +109,22 @@
         }
     </div>
 
+
+
+    @if (Model.Status == MasterBeasProject.Models.BookingStatus.Accepted && isClient)
+    {
+        <div class="card shadow-sm mb-3 border-warning">
+            <div class="card-body">
+                <a asp-controller="Payment" asp-action="Checkout" asp-route-bookingId="@Model.Id"
+                   class="btn btn-warning w-100 btn-lg">
+                    <i class="bi bi-credit-card me-2"></i>Pay Now — @Model.Price JD
+                </a>
+            </div>
+        </div>
+    }
+
+
+
     <!-- Chat -->
     <div class="col-md-7">
         <div class="card shadow-sm">
@@ -163,21 +179,23 @@
 </div>
 
 @section Scripts {
-    <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+
     @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
     {
-        <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
         <script>
-            function initMap() {
-                const pos = { lat: @Model.Latitude, lng: @Model.Longitude };
-                const map = new google.maps.Map(document.getElementById("map"), { center: pos, zoom: 15 });
-                new google.maps.Marker({ position: pos, map: map });
-            }
+            var map = L.map('map').setView([@Model.Latitude, @Model.Longitude], 15);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+            L.marker([@Model.Latitude, @Model.Longitude]).addTo(map);
         </script>
     }
+
     <script>
         const bookingId = @Model.Id;
         const chatBox = document.getElementById("chatBox");
+        const currentUserId = "@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value";
 
         const connection = new signalR.HubConnectionBuilder()
             .withUrl("/chatHub")
@@ -185,7 +203,7 @@
             .build();
 
         connection.on("ReceiveMessage", function (data) {
-            appendMessage(data.senderName, data.message, data.sentAt, data.senderId === "@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value";
+            appendMessage(data.senderName, data.message, data.sentAt, data.senderId === currentUserId);
             chatBox.scrollTop = chatBox.scrollHeight;
         });
 

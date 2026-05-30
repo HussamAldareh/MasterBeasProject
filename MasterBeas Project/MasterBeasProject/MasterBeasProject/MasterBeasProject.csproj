@@ -16,6 +16,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.27" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.23" />
     <PackageReference Include="QuestPDF" Version="2026.5.0" />
+    <PackageReference Include="Stripe.net" Version="51.2.0" />
   </ItemGroup>
 
 </Project>

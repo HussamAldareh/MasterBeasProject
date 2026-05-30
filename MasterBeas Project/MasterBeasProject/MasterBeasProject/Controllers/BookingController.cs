@@ -59,8 +59,6 @@ namespace MasterBeasProject.Controllers
             if (string.IsNullOrWhiteSpace(propertyAddress))
                 ModelState.AddModelError("propertyAddress", "Property address is required.");
 
-            if (inspectionDate < DateTime.Now.AddHours(24))
-                ModelState.AddModelError("inspectionDate", "Inspection date must be at least 24 hours from now.");
 
             if (!ModelState.IsValid)
             {
