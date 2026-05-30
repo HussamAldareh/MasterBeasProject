@@ -1,0 +1,69 @@
+﻿@model IEnumerable<MasterBeasProject.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "Manage Users";
+    var userRoles = ViewBag.UserRoles as Dictionary<string, IList<string>>;
+}
+
+<h2 class="mb-4">Manage Users</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Registered</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.FullName</td>
+                    <td>@user.Email</td>
+                    <td>
+                        @if (userRoles != null && userRoles.ContainsKey(user.Id))
+                        {
+                            foreach (var role in userRoles[user.Id])
+                            {
+                                <span class="badge bg-secondary">@role</span>
+                            }
+                        }
+                    </td>
+                    <td>@user.CreatedAt.ToString("MMM dd, yyyy")</td>
+                    <td>
+                        @if (user.IsActive)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Inactive</span>
+                        }
+                    </td>
+                    <td>
+                        <form asp-action="ToggleUser" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="userId" value="@user.Id" />
+                            <button type="submit"
+                                    class="btn btn-sm @(user.IsActive ? "btn-outline-danger" : "btn-outline-success")">
+                                @(user.IsActive ? "Deactivate" : "Activate")
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

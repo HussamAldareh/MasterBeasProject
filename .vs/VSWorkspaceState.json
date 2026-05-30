@@ -1,7 +1,12 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\MasterBeas Project",
+    "\\MasterBeas Project\\MasterBeasProject",
+    "\\MasterBeas Project\\MasterBeasProject\\MasterBeasProject",
+    "\\MasterBeas Project\\MasterBeasProject\\MasterBeasProject\\Views",
+    "\\MasterBeas Project\\MasterBeasProject\\MasterBeasProject\\Views\\Review"
   ],
-  "SelectedNode": "\\C:\\Users\\user\\Source\\Repos\\MasterBeasProject",
+  "SelectedNode": "\\MasterBeas Project\\MasterBeasProject\\MasterBeasProject\\Views\\Review\\Create.cshtml",
   "PreviewInSolutionExplorer": false
 }

@@ -1,0 +1,114 @@
+﻿@model IEnumerable<MasterBeasProject.Models.Booking>
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h2 class="mb-4">Admin Dashboard</h2>
+
+<!-- Stats -->
+<div class="row row-cols-2 row-cols-md-3 g-3 mb-4">
+    <div class="col">
+        <div class="card text-center shadow-sm border-0 bg-primary text-white">
+            <div class="card-body">
+                <h3>@ViewBag.TotalUsers</h3>
+                <p class="mb-0">Total Users</p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-center shadow-sm border-0 bg-success text-white">
+            <div class="card-body">
+                <h3>@ViewBag.TotalEngineers</h3>
+                <p class="mb-0">Engineers</p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-center shadow-sm border-0 bg-info text-white">
+            <div class="card-body">
+                <h3>@ViewBag.TotalBookings</h3>
+                <p class="mb-0">Total Bookings</p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-center shadow-sm border-0 bg-warning text-dark">
+            <div class="card-body">
+                <h3>@ViewBag.PendingBookings</h3>
+                <p class="mb-0">Pending</p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-center shadow-sm border-0 bg-secondary text-white">
+            <div class="card-body">
+                <h3>@ViewBag.CompletedBookings</h3>
+                <p class="mb-0">Completed</p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-center shadow-sm border-0 bg-dark text-white">
+            <div class="card-body">
+                <h3>@ViewBag.TotalReports</h3>
+                <p class="mb-0">Reports</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Links -->
+<div class="d-flex gap-2 mb-4">
+    <a asp-action="Users" class="btn btn-outline-primary">Manage Users</a>
+    <a asp-action="Engineers" class="btn btn-outline-success">Manage Engineers</a>
+    <a asp-action="Bookings" class="btn btn-outline-info">All Bookings</a>
+</div>
+
+<!-- Recent Bookings -->
+<h5 class="mb-3">Recent Bookings</h5>
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>#</th>
+                <th>Client</th>
+                <th>Engineer</th>
+                <th>Property</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model)
+            {
+                <tr>
+                    <td>@booking.Id</td>
+                    <td>@booking.Client?.FullName</td>
+                    <td>@booking.EngineerProfile?.User?.FullName</td>
+                    <td>@(booking.PropertyAddress.Length > 25 ? booking.PropertyAddress.Substring(0, 25) + "..." : booking.PropertyAddress)</td>
+                    <td>@booking.InspectionDate.ToString("MMM dd, yyyy")</td>
+                    <td>
+                        @switch (booking.Status)
+                        {
+                            case MasterBeasProject.Models.BookingStatus.Pending:
+                                <span class="badge bg-warning text-dark">Pending</span>
+                                break;
+                            case MasterBeasProject.Models.BookingStatus.Accepted:
+                                <span class="badge bg-success">Accepted</span>
+                                break;
+                            case MasterBeasProject.Models.BookingStatus.Completed:
+                                <span class="badge bg-primary">Completed</span>
+                                break;
+                            case MasterBeasProject.Models.BookingStatus.Rejected:
+                                <span class="badge bg-danger">Rejected</span>
+                                break;
+                            default:
+                                <span class="badge bg-secondary">@booking.Status</span>
+                                break;
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,8 +1,111 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- Hero Section -->
+<div style="background:linear-gradient(135deg,#0F6E56,#1D9E75);color:white;padding:80px 0;">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">Buy Your Property With Confidence</h1>
+        <p class="lead mb-4 opacity-75">Connect with certified engineers for a professional inspection report before you sign anything.</p>
+        <div class="d-flex gap-3 justify-content-center">
+            <a asp-controller="Engineer" asp-action="Index" class="btn btn-light btn-lg px-4">
+                <i class="bi bi-search me-2"></i>Find an Engineer
+            </a>
+            <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-outline-light btn-lg px-4">
+                Get Started
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- How It Works -->
+<div class="container py-5">
+    <h2 class="text-center fw-bold mb-5">How It Works</h2>
+    <div class="row g-4 text-center">
+        <div class="col-md-3">
+            <div class="p-4">
+                <div class="rounded-circle bg-success bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3"
+                     style="width:70px;height:70px;">
+                    <i class="bi bi-map fs-2 text-success"></i>
+                </div>
+                <h5 class="fw-bold">1. Enter Property</h5>
+                <p class="text-muted">Add the property address and details you want inspected.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="p-4">
+                <div class="rounded-circle bg-success bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3"
+                     style="width:70px;height:70px;">
+                    <i class="bi bi-person-check fs-2 text-success"></i>
+                </div>
+                <h5 class="fw-bold">2. Choose Engineer</h5>
+                <p class="text-muted">Browse certified engineers with real ratings and fair prices.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="p-4">
+                <div class="rounded-circle bg-success bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3"
+                     style="width:70px;height:70px;">
+                    <i class="bi bi-house-check fs-2 text-success"></i>
+                </div>
+                <h5 class="fw-bold">3. Get Inspected</h5>
+                <p class="text-muted">The engineer visits the property and documents everything.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="p-4">
+                <div class="rounded-circle bg-success bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3"
+                     style="width:70px;height:70px;">
+                    <i class="bi bi-file-earmark-check fs-2 text-success"></i>
+                </div>
+                <h5 class="fw-bold">4. Receive Report</h5>
+                <p class="text-muted">Get a certified PDF report within 48 hours. Buy with peace of mind.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Why PropCheck -->
+<div style="background:#F8F9FA;" class="py-5">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-5">Why PropCheck?</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 p-3">
+                    <div class="card-body">
+                        <i class="bi bi-shield-check fs-2 text-success mb-3 d-block"></i>
+                        <h5 class="fw-bold">Certified Engineers</h5>
+                        <p class="text-muted">All engineers are verified professionals with proven track records.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 p-3">
+                    <div class="card-body">
+                        <i class="bi bi-file-pdf fs-2 text-success mb-3 d-block"></i>
+                        <h5 class="fw-bold">Documented Report</h5>
+                        <p class="text-muted">Receive a detailed PDF report with photos covering every aspect of the property.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 p-3">
+                    <div class="card-body">
+                        <i class="bi bi-chat-dots fs-2 text-success mb-3 d-block"></i>
+                        <h5 class="fw-bold">Direct Communication</h5>
+                        <p class="text-muted">Chat directly with your engineer before and after the inspection.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA -->
+<div class="container py-5 text-center">
+    <h2 class="fw-bold mb-3">Ready to inspect your property?</h2>
+    <p class="text-muted mb-4">Join hundreds of smart buyers who made informed decisions with PropCheck.</p>
+    <a asp-controller="Engineer" asp-action="Index" class="btn btn-success btn-lg px-5">
+        Find an Engineer Now
+    </a>
 </div>
