@@ -1,100 +1,210 @@
 ﻿@model MasterBeasProject.Models.EngineerProfile
 @{
     ViewData["Title"] = "Engineer Details";
+    var reviews = Model.Reviews.OrderByDescending(r => r.CreatedAt).ToList();
+    var visibleReviews = reviews.Take(5).ToList();
+    var hiddenReviews = reviews.Skip(5).ToList();
 }
 
-<div class="row">
-    <!-- Engineer Profile -->
-    <div class="col-md-4">
-        <div class="card shadow-sm mb-4">
-            <div class="card-body text-center">
-                @if (!string.IsNullOrEmpty(Model.User?.ProfileImageUrl))
-                {
-                    <img src="@Model.User.ProfileImageUrl"
-                         class="rounded-circle mb-3"
-                         style="width:100px;height:100px;object-fit:cover;" />
-                }
-                else
-                {
-                    <div class="rounded-circle bg-secondary mx-auto mb-3 d-flex align-items-center justify-content-center text-white"
-                         style="width:100px;height:100px;font-size:36px;">
-                        @Model.User?.FullName?.FirstOrDefault()
+<div class="container py-4">
+    <div class="row g-4">
+
+        <!-- Left — Engineer Profile -->
+        <div class="col-md-4">
+            <div class="p-4 mb-3" style="background:#111;border:1px solid #222;border-radius:14px;">
+
+                <!-- Avatar -->
+                <div class="text-center mb-4">
+                    @if (!string.IsNullOrEmpty(Model.User?.ProfileImageUrl))
+                    {
+                        <img src="@Model.User.ProfileImageUrl"
+                             class="rounded-circle mb-3"
+                             style="width:100px;height:100px;object-fit:cover;border:3px solid #EF9F27;" />
+                    }
+                    else
+                    {
+                        <div class="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center fw-bold"
+                             style="width:100px;height:100px;background:#EF9F27;color:#0a0a0a;font-size:36px;">
+                            @Model.User?.FullName?.FirstOrDefault()
+                        </div>
+                    }
+                    <h4 class="fw-bold mb-1">@Model.User?.FullName</h4>
+                    <span style="background:rgba(239,159,39,.1);color:#EF9F27;border:1px solid rgba(239,159,39,.3);padding:3px 12px;border-radius:20px;font-size:13px;">
+                        @Model.Specialization
+                    </span>
+                </div>
+
+                <!-- Stats -->
+                <div class="row g-2 mb-4">
+                    <div class="col-4 text-center p-2" style="background:#1a1a1a;border-radius:10px;">
+                        <div style="color:#EF9F27;font-weight:700;font-size:18px;">@Model.YearsOfExperience</div>
+                        <div style="color:#666;font-size:11px;">Years Exp.</div>
                     </div>
-                }
-                <h4>@Model.User?.FullName</h4>
-                <p class="text-muted">@Model.Specialization</p>
-                <hr />
-                <ul class="list-unstyled text-start">
-                    <li class="mb-2"><i class="bi bi-briefcase me-2"></i>@Model.YearsOfExperience years experience</li>
-                    <li class="mb-2"><i class="bi bi-cash me-2"></i>@Model.InspectionPrice JD per inspection</li>
-                    <li class="mb-2"><i class="bi bi-star-fill text-warning me-2"></i>@Model.AverageRating.ToString("0.0") / 5 (@Model.TotalReviews reviews)</li>
+                    <div class="col-4 text-center p-2" style="background:#1a1a1a;border-radius:10px;">
+                        <div style="color:#EF9F27;font-weight:700;font-size:18px;">@Model.AverageRating.ToString("0.0")</div>
+                        <div style="color:#666;font-size:11px;">Rating</div>
+                    </div>
+                    <div class="col-4 text-center p-2" style="background:#1a1a1a;border-radius:10px;">
+                        <div style="color:#EF9F27;font-weight:700;font-size:18px;">@Model.TotalReviews</div>
+                        <div style="color:#666;font-size:11px;">Reviews</div>
+                    </div>
+                </div>
+
+                <!-- Details -->
+                <div class="d-flex flex-column gap-2 mb-4">
+                    <div class="d-flex align-items-center gap-2" style="color:#aaa;font-size:14px;">
+                        <i class="bi bi-cash" style="color:#EF9F27;"></i>
+                        <span>@Model.InspectionPrice JD per inspection</span>
+                    </div>
                     @if (!string.IsNullOrEmpty(Model.LicenseNumber))
                     {
-                        <li class="mb-2"><i class="bi bi-patch-check me-2"></i>License: @Model.LicenseNumber</li>
+                        <div class="d-flex align-items-center gap-2" style="color:#aaa;font-size:14px;">
+                            <i class="bi bi-patch-check" style="color:#EF9F27;"></i>
+                            <span>License: @Model.LicenseNumber</span>
+                        </div>
                     }
-                    <li>
+                    <div class="d-flex align-items-center gap-2" style="font-size:14px;">
                         @if (Model.IsAvailable)
                         {
-                            <span class="badge bg-success">Available</span>
+                            <i class="bi bi-circle-fill" style="color:#5DCAA5;font-size:10px;"></i>
+                            <span style="color:#5DCAA5;">Available for booking</span>
                         }
                         else
                         {
-                            <span class="badge bg-danger">Not Available</span>
+                            <i class="bi bi-circle-fill" style="color:#F09595;font-size:10px;"></i>
+                            <span style="color:#F09595;">Currently unavailable</span>
                         }
-                    </li>
-                </ul>
+                    </div>
+                </div>
+
                 @if (!string.IsNullOrEmpty(Model.Bio))
                 {
-                    <p class="text-muted small mt-3">@Model.Bio</p>
+                    <p style="color:#777;font-size:13px;line-height:1.7;border-top:1px solid #222;padding-top:14px;">
+                        @Model.Bio
+                    </p>
                 }
             </div>
+
+            <!-- Book Button -->
+            @if (Model.IsAvailable)
+            {
+                <a asp-controller="Booking" asp-action="Create" asp-route-engineerId="@Model.Id"
+                   class="btn btn-primary w-100 btn-lg">
+                    <i class="bi bi-calendar-check me-2"></i>Book Inspection
+                </a>
+            }
+            else
+            {
+                <button class="btn w-100 btn-lg" disabled
+                        style="background:#1a1a1a;color:#666;border:1px solid #333;">
+                    Not Available
+                </button>
+            }
+
+            <a asp-action="Index" class="btn btn-outline-secondary w-100 mt-2">
+                <i class="bi bi-arrow-left me-2"></i>Back to Engineers
+            </a>
         </div>
 
-        @if (Model.IsAvailable)
-        {
-            <a asp-controller="Booking" asp-action="Create" asp-route-engineerId="@Model.Id"
-               class="btn btn-primary w-100">Book Inspection</a>
-        }
-        else
-        {
-            <button class="btn btn-secondary w-100" disabled>Not Available</button>
-        }
-    </div>
+        <!-- Right — Reviews -->
+        <div class="col-md-8">
+            <h5 class="fw-bold mb-4" style="color:white;">
+                Client Reviews
+                <span style="color:#666;font-weight:400;font-size:14px;margin-left:8px;">(@Model.TotalReviews)</span>
+            </h5>
 
-    <!-- Reviews -->
-    <div class="col-md-8">
-        <h4 class="mb-3">Client Reviews</h4>
-        @if (!Model.Reviews.Any())
-        {
-            <div class="alert alert-light">No reviews yet.</div>
-        }
-        else
-        {
-            @foreach (var review in Model.Reviews.OrderByDescending(r => r.CreatedAt))
+            @if (!reviews.Any())
             {
-                <div class="card mb-3 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <strong>@review.Client?.FullName</strong>
-                            <small class="text-muted">@review.CreatedAt.ToString("MMM dd, yyyy")</small>
+                <div class="text-center py-5" style="background:#111;border:1px solid #222;border-radius:14px;">
+                    <i class="bi bi-star" style="font-size:40px;color:#333;"></i>
+                    <p class="mt-3" style="color:#666;">No reviews yet. Be the first to review!</p>
+                </div>
+            }
+            else
+            {
+                <!-- Visible Reviews -->
+                @foreach (var review in visibleReviews)
+                {
+                    <div class="p-4 mb-3" style="background:#111;border:1px solid #222;border-radius:14px;">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold"
+                                     style="width:36px;height:36px;background:#EF9F27;color:#0a0a0a;font-size:14px;flex-shrink:0;">
+                                    @review.Client?.FullName?.FirstOrDefault()
+                                </div>
+                                <strong style="color:white;font-size:14px;">@review.Client?.FullName</strong>
+                            </div>
+                            <small style="color:#555;">@review.CreatedAt.ToString("MMM dd, yyyy")</small>
                         </div>
-                        <div class="text-warning my-1">
+                        <div class="mb-2">
                             @for (int i = 1; i <= 5; i++)
                             {
-                                <i class="bi @(i <= review.Rating ? "bi-star-fill" : "bi-star")"></i>
+                                <i class="bi @(i <= review.Rating ? "bi-star-fill" : "bi-star")"
+                                   style="color:#EF9F27;font-size:13px;"></i>
                             }
                         </div>
                         @if (!string.IsNullOrEmpty(review.Comment))
                         {
-                            <p class="mb-0 text-muted">@review.Comment</p>
+                            <p class="mb-0" style="color:#888;font-size:14px;line-height:1.6;">@review.Comment</p>
                         }
                     </div>
-                </div>
+                }
+
+                <!-- Hidden Reviews -->
+                @if (hiddenReviews.Any())
+                {
+                    <div id="hiddenReviews" style="display:none;">
+                        @foreach (var review in hiddenReviews)
+                        {
+                            <div class="p-4 mb-3" style="background:#111;border:1px solid #222;border-radius:14px;">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold"
+                                             style="width:36px;height:36px;background:#EF9F27;color:#0a0a0a;font-size:14px;flex-shrink:0;">
+                                            @review.Client?.FullName?.FirstOrDefault()
+                                        </div>
+                                        <strong style="color:white;font-size:14px;">@review.Client?.FullName</strong>
+                                    </div>
+                                    <small style="color:#555;">@review.CreatedAt.ToString("MMM dd, yyyy")</small>
+                                </div>
+                                <div class="mb-2">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <i class="bi @(i <= review.Rating ? "bi-star-fill" : "bi-star")"
+                                           style="color:#EF9F27;font-size:13px;"></i>
+                                    }
+                                </div>
+                                @if (!string.IsNullOrEmpty(review.Comment))
+                                {
+                                    <p class="mb-0" style="color:#888;font-size:14px;line-height:1.6;">@review.Comment</p>
+                                }
+                            </div>
+                        }
+                    </div>
+
+                    <button id="showMoreBtn" onclick="toggleReviews()"
+                            class="btn btn-outline-secondary w-100">
+                        <i class="bi bi-chevron-down me-2"></i>Show @hiddenReviews.Count More Reviews
+                    </button>
+                }
             }
-        }
+        </div>
+
     </div>
 </div>
 
-<div class="mt-3">
-    <a asp-action="Index" class="btn btn-outline-secondary">Back to Engineers</a>
-</div>
+@section Scripts {
+    <script>
+        function toggleReviews() {
+            const hidden = document.getElementById('hiddenReviews');
+            const btn = document.getElementById('showMoreBtn');
+            if (hidden.style.display === 'none') {
+                hidden.style.display = 'block';
+                btn.innerHTML = '<i class="bi bi-chevron-up me-2"></i>Show Less';
+            } else {
+                hidden.style.display = 'none';
+                btn.innerHTML = '<i class="bi bi-chevron-down me-2"></i>Show @hiddenReviews.Count More Reviews';
+            }
+        }
+    </script>
+}

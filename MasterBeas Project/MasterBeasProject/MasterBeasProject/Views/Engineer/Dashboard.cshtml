@@ -130,7 +130,8 @@ else
                                 </button>
                             }
 
-                            @if (booking.Status == MasterBeasProject.Models.BookingStatus.Accepted)
+                            @if (booking.Status == MasterBeasProject.Models.BookingStatus.InProgress)
+
                             {
                                 <a asp-controller="Report" asp-action="Create" asp-route-bookingId="@booking.Id"
                                    class="btn btn-sm btn-warning">Create Report</a>

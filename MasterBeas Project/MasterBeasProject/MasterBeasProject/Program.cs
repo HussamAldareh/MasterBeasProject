@@ -3,6 +3,7 @@ using MasterBeasProject.Hubs;
 using MasterBeasProject.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,6 +41,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
 
+StripeConfiguration.ApiKey =
+    builder.Configuration["Stripe:SecretKey"];
 
 var app = builder.Build();
 

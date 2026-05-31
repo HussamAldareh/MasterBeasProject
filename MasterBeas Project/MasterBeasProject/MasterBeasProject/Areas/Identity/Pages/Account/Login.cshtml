@@ -1,80 +1,108 @@
 ﻿@page
 @model LoginModel
-
 @{
     ViewData["Title"] = "Log in";
 }
 
-<h1>@ViewData["Title"]</h1>
-<div class="row">
-    <div class="col-md-4">
-        <section>
-            <form id="account" method="post">
-                <h2>Use a local account to log in.</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email" class="form-label">Email</label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+<div class="min-vh-100 d-flex align-items-center" style="background:#0a0a0a;">
+    <div class="container">
+        <div class="row g-0 justify-content-center" style="max-width:900px;margin:0 auto;">
+
+            <!-- Left — Brand Side -->
+            <div class="col-md-5 d-none d-md-flex flex-column justify-content-center p-5"
+                 style="background:#111;border:1px solid #222;border-radius:16px 0 0 16px;">
+                <div class="mb-4">
+                    <h2 class="fw-bold mb-1" style="font-size:28px;">
+                        <span style="color:#EF9F27;">Prop</span><span style="color:white;">Check</span>
+                    </h2>
+                    <p style="color:#888;font-size:14px;">Smart property inspection platform</p>
                 </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="form-label">Password</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-                <div>
-                    <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                    </p>
-                </div>
-            </form>
-        </section>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to log in.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
+                <div class="d-flex flex-column gap-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0"
+                             style="width:40px;height:40px;background:rgba(239,159,39,.1);border:1px solid rgba(239,159,39,.2);">
+                            <i class="bi bi-shield-check" style="color:#EF9F27;"></i>
                         </div>
-                    </form>
-                }
-            }
-        </section>
+                        <div>
+                            <p class="mb-0 fw-500" style="color:white;font-size:13px;">Certified Engineers</p>
+                            <p class="mb-0" style="color:#666;font-size:12px;">Verified professionals only</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0"
+                             style="width:40px;height:40px;background:rgba(239,159,39,.1);border:1px solid rgba(239,159,39,.2);">
+                            <i class="bi bi-file-earmark-check" style="color:#EF9F27;"></i>
+                        </div>
+                        <div>
+                            <p class="mb-0 fw-500" style="color:white;font-size:13px;">PDF Reports</p>
+                            <p class="mb-0" style="color:#666;font-size:12px;">Detailed inspection docs</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0"
+                             style="width:40px;height:40px;background:rgba(239,159,39,.1);border:1px solid rgba(239,159,39,.2);">
+                            <i class="bi bi-chat-dots" style="color:#EF9F27;"></i>
+                        </div>
+                        <div>
+                            <p class="mb-0 fw-500" style="color:white;font-size:13px;">Live Chat</p>
+                            <p class="mb-0" style="color:#666;font-size:12px;">Direct engineer communication</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5 pt-3" style="border-top:1px solid #222;">
+                    <p style="color:#555;font-size:12px;">"Buy your property with confidence — know before you sign."</p>
+                </div>
+            </div>
+
+            <!-- Right — Login Form -->
+            <div class="col-md-7 p-5"
+                 style="background:#111;border:1px solid #222;border-left:1px solid #1a1a1a;border-radius:0 16px 16px 0;">
+                <div class="mb-4">
+                    <h3 class="fw-bold mb-1" style="color:white;">Welcome back</h3>
+                    <p style="color:#666;font-size:14px;">Sign in to your PropCheck account</p>
+                </div>
+
+                <form id="account" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-3" role="alert"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.Email" class="form-label">Email</label>
+                        <input asp-for="Input.Email" class="form-control" autocomplete="username"
+                               placeholder="name@example.com" />
+                        <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.Password" class="form-label">Password</label>
+                        <input asp-for="Input.Password" class="form-control" autocomplete="current-password"
+                               placeholder="••••••••" />
+                        <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" asp-for="Input.RememberMe" />
+                            <label asp-for="Input.RememberMe" class="form-check-label" style="color:#888;font-size:13px;">
+                                Remember me
+                            </label>
+                        </div>
+                        <a id="forgot-password" asp-page="./ForgotPassword"
+                           style="color:#EF9F27;font-size:13px;text-decoration:none;">Forgot password?</a>
+                    </div>
+
+                    <button id="login-submit" type="submit" class="w-100 btn btn-primary btn-lg mb-3">
+                        Sign In
+                    </button>
+
+                    <p class="text-center mb-0" style="color:#666;font-size:13px;">
+                        Don't have an account?
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl"
+                           style="color:#EF9F27;text-decoration:none;">Create one</a>
+                    </p>
+                </form>
+            </div>
+
+        </div>
     </div>
 </div>
 

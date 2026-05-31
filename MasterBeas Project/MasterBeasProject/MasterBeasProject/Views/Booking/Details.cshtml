@@ -110,17 +110,12 @@
     </div>
 
 
-
     @if (Model.Status == MasterBeasProject.Models.BookingStatus.Accepted && isClient)
     {
-        <div class="card shadow-sm mb-3 border-warning">
-            <div class="card-body">
-                <a asp-controller="Payment" asp-action="Checkout" asp-route-bookingId="@Model.Id"
-                   class="btn btn-warning w-100 btn-lg">
-                    <i class="bi bi-credit-card me-2"></i>Pay Now — @Model.Price JD
-                </a>
-            </div>
-        </div>
+        <a asp-controller="Payment" asp-action="Checkout" asp-route-bookingId="@Model.Id"
+           class="btn btn-warning w-100 mt-2">
+            <i class="bi bi-credit-card me-2"></i>Pay Now — @Model.Price JD
+        </a>
     }
 
 

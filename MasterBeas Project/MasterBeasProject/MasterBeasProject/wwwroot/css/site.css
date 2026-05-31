@@ -1,22 +1,528 @@
-html {
-  font-size: 14px;
+/* ===========================
+   PropCheck — Black & Gold Theme
+   =========================== */
+
+:root {
+    --gold: #EF9F27;
+    --gold-light: #FAC775;
+    --gold-dark: #BA7517;
+    --gold-darker: #854F0B;
+    --black: #0a0a0a;
+    --black-2: #111111;
+    --black-3: #1a1a1a;
+    --black-4: #222222;
+    --black-5: #2a2a2a;
+    --gray: #888888;
+    --gray-light: #aaaaaa;
+    --white: #ffffff;
+    --white-soft: #f5f5f5;
+    --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+/* Base */
+* {
+    box-sizing: border-box;
 }
 
 body {
-  margin-bottom: 60px;
+    font-family: var(--font-main);
+    background: var(--black-2);
+    color: var(--white);
+    margin: 0;
+    min-height: 100vh;
+}
+
+/* ===========================
+   Navbar
+   =========================== */
+.navbar {
+    background: var(--black) !important;
+    border-bottom: 1px solid var(--gold-dark);
+    padding: 12px 0;
+}
+
+.navbar-brand {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--white) !important;
+}
+
+    .navbar-brand span {
+        color: var(--gold) !important;
+    }
+
+.nav-link {
+    color: var(--gray-light) !important;
+    font-size: 14px;
+    transition: color .2s;
+    padding: 6px 12px !important;
+}
+
+    .nav-link:hover {
+        color: var(--gold) !important;
+    }
+
+.navbar-toggler {
+    border-color: var(--gold-dark) !important;
+}
+
+.navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* ===========================
+   Buttons
+   =========================== */
+.btn-primary {
+    background: var(--gold) !important;
+    border-color: var(--gold) !important;
+    color: var(--black) !important;
+    font-weight: 600;
+    transition: background .2s, transform .1s;
+}
+
+    .btn-primary:hover {
+        background: var(--gold-dark) !important;
+        border-color: var(--gold-dark) !important;
+        color: var(--black) !important;
+        transform: translateY(-1px);
+    }
+
+.btn-outline-primary {
+    border-color: var(--gold) !important;
+    color: var(--gold) !important;
+    background: transparent !important;
+}
+
+    .btn-outline-primary:hover {
+        background: var(--gold) !important;
+        color: var(--black) !important;
+    }
+
+.btn-warning {
+    background: var(--gold) !important;
+    border-color: var(--gold) !important;
+    color: var(--black) !important;
+    font-weight: 600;
+}
+
+    .btn-warning:hover {
+        background: var(--gold-dark) !important;
+        border-color: var(--gold-dark) !important;
+    }
+
+.btn-success {
+    background: #1a6b3a !important;
+    border-color: #1a6b3a !important;
+}
+
+.btn-outline-secondary {
+    border-color: #444 !important;
+    color: var(--gray-light) !important;
+}
+
+    .btn-outline-secondary:hover {
+        background: var(--black-4) !important;
+        color: var(--white) !important;
+    }
+
+.btn-lg {
+    padding: 12px 28px;
+    font-size: 15px;
+    border-radius: 8px;
+}
+
+.btn-sm {
+    border-radius: 6px;
+}
+
+/* ===========================
+   Cards
+   =========================== */
+.card {
+    background: var(--black-3) !important;
+    border: 1px solid #2a2a2a !important;
+    border-radius: 12px !important;
+    color: var(--white) !important;
+}
+
+.card-header {
+    background: var(--black-4) !important;
+    border-bottom: 1px solid #333 !important;
+    color: var(--white) !important;
+    font-weight: 500;
+    padding: 14px 18px;
+}
+
+.card-body {
+    padding: 18px;
+}
+
+.card-footer {
+    background: var(--black-3) !important;
+    border-top: 1px solid #2a2a2a !important;
+}
+
+.shadow-sm {
+    box-shadow: 0 2px 12px rgba(0,0,0,.4) !important;
+}
+
+/* ===========================
+   Forms
+   =========================== */
+.form-control, .form-select {
+    background: var(--black-4) !important;
+    border: 1px solid #333 !important;
+    color: var(--white) !important;
+    border-radius: 8px;
+    padding: 10px 14px;
+    transition: border-color .2s;
+}
+
+    .form-control:focus, .form-select:focus {
+        background: var(--black-4) !important;
+        border-color: var(--gold) !important;
+        color: var(--white) !important;
+        box-shadow: 0 0 0 3px rgba(239,159,39,.15) !important;
+    }
+
+    .form-control::placeholder {
+        color: #555 !important;
+    }
+
+.form-label {
+    color: var(--gray-light);
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.form-check-input {
+    background-color: var(--black-4) !important;
+    border-color: #444 !important;
+}
+
+    .form-check-input:checked {
+        background-color: var(--gold) !important;
+        border-color: var(--gold) !important;
+    }
+
+.input-group-text {
+    background: var(--black-5) !important;
+    border-color: #333 !important;
+    color: var(--gray-light) !important;
+}
+
+/* ===========================
+   Tables
+   =========================== */
+.table {
+    color: var(--white) !important;
+    border-color: #2a2a2a !important;
+}
+
+.table-hover > tbody > tr:hover {
+    background: var(--black-4) !important;
+    color: var(--white) !important;
+}
+
+.table-light, thead.table-light {
+    background: var(--black-4) !important;
+    color: var(--gray-light) !important;
+    border-color: #333 !important;
+}
+
+    .table-light th {
+        color: var(--gold-light) !important;
+        font-weight: 500;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+    }
+
+.table > :not(caption) > * > * {
+    border-bottom-color: #222 !important;
+    background: transparent !important;
+}
+
+/* ===========================
+   Badges
+   =========================== */
+.badge {
+    font-weight: 500;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 6px;
+}
+
+.bg-warning {
+    background: var(--gold) !important;
+    color: var(--black) !important;
+}
+
+.bg-success {
+    background: #1a6b3a !important;
+}
+
+.bg-primary {
+    background: #185FA5 !important;
+}
+
+.bg-danger {
+    background: #8B1A1A !important;
+}
+
+.bg-secondary {
+    background: #333 !important;
+}
+
+.text-dark {
+    color: var(--black) !important;
+}
+
+/* ===========================
+   Alerts
+   =========================== */
+.alert {
+    border-radius: 10px;
+    border: none;
+    font-size: 14px;
+}
+
+.alert-success {
+    background: rgba(26,107,58,.2) !important;
+    color: #5DCAA5 !important;
+    border: 1px solid rgba(26,107,58,.4) !important;
+}
+
+.alert-danger {
+    background: rgba(139,26,26,.2) !important;
+    color: #F09595 !important;
+    border: 1px solid rgba(139,26,26,.4) !important;
+}
+
+.alert-info {
+    background: rgba(239,159,39,.1) !important;
+    color: var(--gold-light) !important;
+    border: 1px solid rgba(239,159,39,.3) !important;
+}
+
+.alert-light {
+    background: var(--black-4) !important;
+    color: var(--gray-light) !important;
+    border: 1px solid #333 !important;
+}
+
+/* ===========================
+   Modals
+   =========================== */
+.modal-content {
+    background: var(--black-3) !important;
+    border: 1px solid #333 !important;
+    border-radius: 14px !important;
+    color: var(--white) !important;
+}
+
+.modal-header {
+    border-bottom: 1px solid #2a2a2a !important;
+    padding: 16px 20px;
+}
+
+.modal-footer {
+    border-top: 1px solid #2a2a2a !important;
+}
+
+.btn-close {
+    filter: invert(1);
+}
+
+/* ===========================
+   Dropdowns
+   =========================== */
+.dropdown-menu {
+    background: var(--black-3) !important;
+    border: 1px solid #333 !important;
+    border-radius: 10px !important;
+    padding: 6px !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,.6) !important;
+}
+
+.dropdown-item {
+    color: var(--gray-light) !important;
+    border-radius: 6px !important;
+    font-size: 14px;
+    padding: 8px 12px !important;
+}
+
+    .dropdown-item:hover {
+        background: var(--black-4) !important;
+        color: var(--gold) !important;
+    }
+
+    .dropdown-item.text-danger {
+        color: #F09595 !important;
+    }
+
+        .dropdown-item.text-danger:hover {
+            background: rgba(139,26,26,.2) !important;
+        }
+
+.dropdown-divider {
+    border-color: #2a2a2a !important;
+}
+
+.dropdown-item-text {
+    color: #555 !important;
+    font-size: 12px !important;
+}
+
+/* ===========================
+   List Groups
+   =========================== */
+.list-group-item {
+    background: var(--black-3) !important;
+    border-color: #2a2a2a !important;
+    color: var(--white) !important;
+}
+
+    .list-group-item:hover {
+        background: var(--black-4) !important;
+    }
+
+.list-group-item-light {
+    background: var(--black-4) !important;
+}
+
+/* ===========================
+   Text
+   =========================== */
+.text-muted {
+    color: var(--gray) !important;
+}
+
+.text-warning {
+    color: var(--gold) !important;
+}
+
+.text-success {
+    color: #5DCAA5 !important;
+}
+
+.text-danger {
+    color: #F09595 !important;
+}
+
+.text-primary {
+    color: var(--gold) !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--white);
+}
+
+small {
+    color: var(--gray) !important;
+}
+
+/* ===========================
+   Gold Accent
+   =========================== */
+.gold-text {
+    color: var(--gold) !important;
+}
+
+.gold-border {
+    border-color: var(--gold) !important;
+}
+
+.border-success {
+    border-color: #1a6b3a !important;
+}
+
+.border-warning {
+    border-color: var(--gold) !important;
+}
+
+/* ===========================
+   Hero Section
+   =========================== */
+.hero-section {
+    background: linear-gradient(135deg, var(--black) 0%, var(--black-3) 100%);
+    border-bottom: 1px solid var(--gold-dark);
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(239,159,39,.08) 0%, transparent 70%);
+        pointer-events: none;
+    }
+
+/* ===========================
+   Page Container
+   =========================== */
+main.container, .container {
+    padding-top: 30px;
+    padding-bottom: 40px;
+}
+
+/* ===========================
+   Scrollbar
+   =========================== */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--black-2);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 3px;
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--gold-dark);
+    }
+
+/* ===========================
+   Star Rating
+   =========================== */
+.text-warning i, .bi-star-fill {
+    color: var(--gold) !important;
+}
+
+/* ===========================
+   Footer
+   =========================== */
+footer {
+    background: var(--black) !important;
+    border-top: 1px solid var(--gold-dark);
+    color: var(--gray);
+    padding: 20px 0;
+    text-align: center;
+    font-size: 13px;
+}
+
+/* ===========================
+   Responsive
+   =========================== */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 50px 0;
+    }
+
+    .display-4 {
+        font-size: 28px;
+    }
 }
