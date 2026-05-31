@@ -40,9 +40,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
-
-StripeConfiguration.ApiKey =
-    builder.Configuration["Stripe:SecretKey"];
+//StripeConfiguration.ApiKey =
+  //  builder.Configuration["Stripe:SecretKey"];
 
 var app = builder.Build();
 
