@@ -5,140 +5,226 @@
     bool isEngineer = ViewBag.IsEngineer;
 }
 
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show">
-        @TempData["Success"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-}
+<div class="container py-4">
 
-<div class="row">
-    <!-- Booking Info -->
-    <div class="col-md-5">
-        <div class="card shadow-sm mb-3">
-            <div class="card-header d-flex justify-content-between">
-                <span>Booking #@Model.Id</span>
-                @switch (Model.Status)
-                {
-                    case MasterBeasProject.Models.BookingStatus.Pending:
-                        <span class="badge bg-warning text-dark">Pending</span>
-                        break;
-                    case MasterBeasProject.Models.BookingStatus.Accepted:
-                        <span class="badge bg-success">Accepted</span>
-                        break;
-                    case MasterBeasProject.Models.BookingStatus.Completed:
-                        <span class="badge bg-primary">Completed</span>
-                        break;
-                    default:
-                        <span class="badge bg-secondary">@Model.Status</span>
-                        break;
-                }
-            </div>
-            <div class="card-body">
-                <ul class="list-unstyled mb-0">
-                    <li class="mb-2"><strong>Client:</strong> @Model.Client?.FullName</li>
-                    <li class="mb-2"><strong>Engineer:</strong> @Model.EngineerProfile?.User?.FullName</li>
-                    <li class="mb-2"><strong>Address:</strong> @Model.PropertyAddress</li>
-                    <li class="mb-2"><strong>Date:</strong> @Model.InspectionDate.ToString("MMM dd, yyyy — hh:mm tt")</li>
-                    <li class="mb-2"><strong>Price:</strong> @Model.Price JD</li>
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show mb-4">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row g-4">
+
+        <!-- Left Column -->
+        <div class="col-md-5">
+
+            <!-- Booking Info -->
+            <div class="p-4 mb-3" style="background:#111;border:1px solid #222;border-radius:14px;">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="fw-bold mb-0" style="color:#EF9F27;">
+                        <i class="bi bi-receipt me-2"></i>Booking #@Model.Id
+                    </h6>
+                    @switch (Model.Status)
+                    {
+                        case MasterBeasProject.Models.BookingStatus.Pending:
+                            <span style="background:rgba(239,159,39,.15);color:#EF9F27;border:1px solid rgba(239,159,39,.3);padding:3px 10px;border-radius:20px;font-size:12px;">Pending</span>
+                            break;
+                        case MasterBeasProject.Models.BookingStatus.Accepted:
+                            <span style="background:rgba(26,107,58,.2);color:#5DCAA5;border:1px solid rgba(26,107,58,.3);padding:3px 10px;border-radius:20px;font-size:12px;">Accepted</span>
+                            break;
+                        case MasterBeasProject.Models.BookingStatus.InProgress:
+                            <span style="background:rgba(24,95,165,.2);color:#7BB8F0;border:1px solid rgba(24,95,165,.3);padding:3px 10px;border-radius:20px;font-size:12px;">In Progress</span>
+                            break;
+                        case MasterBeasProject.Models.BookingStatus.Completed:
+                            <span style="background:rgba(24,95,165,.2);color:#7BB8F0;border:1px solid rgba(24,95,165,.3);padding:3px 10px;border-radius:20px;font-size:12px;">Completed</span>
+                            break;
+                        case MasterBeasProject.Models.BookingStatus.Rejected:
+                            <span style="background:rgba(139,26,26,.2);color:#F09595;border:1px solid rgba(139,26,26,.3);padding:3px 10px;border-radius:20px;font-size:12px;">Rejected</span>
+                            break;
+                        default:
+                            <span style="background:#1a1a1a;color:#666;border:1px solid #333;padding:3px 10px;border-radius:20px;font-size:12px;">@Model.Status</span>
+                            break;
+                    }
+                </div>
+                <div class="d-flex flex-column gap-2">
+                    <div class="d-flex gap-2" style="font-size:13px;">
+                        <i class="bi bi-person mt-1" style="color:#EF9F27;flex-shrink:0;"></i>
+                        <span style="color:#888;">Client: <span style="color:#ddd;">@Model.Client?.FullName</span></span>
+                    </div>
+                    <div class="d-flex gap-2" style="font-size:13px;">
+                        <i class="bi bi-person-badge mt-1" style="color:#EF9F27;flex-shrink:0;"></i>
+                        <span style="color:#888;">Engineer: <span style="color:#ddd;">@Model.EngineerProfile?.User?.FullName</span></span>
+                    </div>
+                    <div class="d-flex gap-2" style="font-size:13px;">
+                        <i class="bi bi-geo-alt mt-1" style="color:#EF9F27;flex-shrink:0;"></i>
+                        <span style="color:#aaa;">@Model.PropertyAddress</span>
+                    </div>
+                    <div class="d-flex gap-2" style="font-size:13px;">
+                        <i class="bi bi-calendar mt-1" style="color:#EF9F27;flex-shrink:0;"></i>
+                        <span style="color:#aaa;">@Model.InspectionDate.ToString("MMM dd, yyyy — hh:mm tt")</span>
+                    </div>
+                    <div class="d-flex gap-2" style="font-size:13px;">
+                        <i class="bi bi-cash mt-1" style="color:#EF9F27;flex-shrink:0;"></i>
+                        <span style="color:#EF9F27;font-weight:600;">@Model.Price JD</span>
+                    </div>
                     @if (!string.IsNullOrEmpty(Model.Notes))
                     {
-                        <li class="mb-2"><strong>Notes:</strong> @Model.Notes</li>
+                        <div class="d-flex gap-2" style="font-size:13px;">
+                            <i class="bi bi-sticky mt-1" style="color:#EF9F27;flex-shrink:0;"></i>
+                            <span style="color:#aaa;">@Model.Notes</span>
+                        </div>
                     }
-                </ul>
+                </div>
             </div>
-        </div>
 
-        <!-- Property Details -->
-        @if (Model.PropertyDetails != null)
-        {
-            <div class="card shadow-sm mb-3">
-                <div class="card-header">Property Details</div>
-                <div class="card-body">
-                    <ul class="list-unstyled mb-0">
-                        <li><strong>Type:</strong> @Model.PropertyDetails.PropertyType</li>
-                        <li><strong>Area:</strong> @Model.PropertyDetails.Area m²</li>
-                        <li><strong>Floor:</strong> @Model.PropertyDetails.FloorNumber</li>
+            <!-- Property Details -->
+            @if (Model.PropertyDetails != null)
+            {
+                <div class="p-4 mb-3" style="background:#111;border:1px solid #222;border-radius:14px;">
+                    <h6 class="fw-bold mb-3" style="color:#EF9F27;">
+                        <i class="bi bi-building me-2"></i>Property Details
+                    </h6>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <div class="p-2 text-center" style="background:#1a1a1a;border-radius:8px;">
+                                <div style="color:#888;font-size:11px;">Type</div>
+                                <div style="color:white;font-size:13px;font-weight:500;">@Model.PropertyDetails.PropertyType</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 text-center" style="background:#1a1a1a;border-radius:8px;">
+                                <div style="color:#888;font-size:11px;">Area</div>
+                                <div style="color:white;font-size:13px;font-weight:500;">@Model.PropertyDetails.Area m²</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-2 text-center" style="background:#1a1a1a;border-radius:8px;">
+                                <div style="color:#888;font-size:11px;">Floor</div>
+                                <div style="color:white;font-size:13px;font-weight:500;">@Model.PropertyDetails.FloorNumber</div>
+                            </div>
+                        </div>
                         @if (Model.PropertyDetails.Bedrooms.HasValue)
                         {
-                            <li><strong>Bedrooms:</strong> @Model.PropertyDetails.Bedrooms</li>
+                            <div class="col-6">
+                                <div class="p-2 text-center" style="background:#1a1a1a;border-radius:8px;">
+                                    <div style="color:#888;font-size:11px;">Bedrooms</div>
+                                    <div style="color:white;font-size:13px;font-weight:500;">@Model.PropertyDetails.Bedrooms</div>
+                                </div>
+                            </div>
                         }
-                        @if (Model.PropertyDetails.Bathrooms.HasValue)
+                    </div>
+                    <div class="d-flex gap-2 mt-2">
+                        @if (Model.PropertyDetails.HasElevator)
                         {
-                            <li><strong>Bathrooms:</strong> @Model.PropertyDetails.Bathrooms</li>
+                            <span style="background:rgba(26,107,58,.15);color:#5DCAA5;border:1px solid rgba(26,107,58,.3);padding:2px 8px;border-radius:6px;font-size:12px;">
+                                <i class="bi bi-check me-1"></i>Elevator
+                            </span>
                         }
-                        @if (Model.PropertyDetails.BuildingAge.HasValue)
+                        @if (Model.PropertyDetails.HasParking)
                         {
-                            <li><strong>Building Age:</strong> @Model.PropertyDetails.BuildingAge years</li>
+                            <span style="background:rgba(26,107,58,.15);color:#5DCAA5;border:1px solid rgba(26,107,58,.3);padding:2px 8px;border-radius:6px;font-size:12px;">
+                                <i class="bi bi-check me-1"></i>Parking
+                            </span>
                         }
-                        <li><strong>Elevator:</strong> @(Model.PropertyDetails.HasElevator ? "Yes" : "No")</li>
-                        <li><strong>Parking:</strong> @(Model.PropertyDetails.HasParking ? "Yes" : "No")</li>
-                    </ul>
+                    </div>
                 </div>
-            </div>
-        }
+            }
 
-        <!-- Map -->
-        @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
-        {
-            <div class="card shadow-sm mb-3">
-                <div class="card-header">Location</div>
-                <div class="card-body p-0">
-                    <div id="map" style="height:200px;border-radius:0 0 8px 8px;"></div>
+            <!-- Map -->
+            @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
+            {
+                <div class="mb-3" style="background:#111;border:1px solid #222;border-radius:14px;overflow:hidden;">
+                    <div class="p-3" style="border-bottom:1px solid #222;">
+                        <h6 class="fw-bold mb-0" style="color:#EF9F27;font-size:13px;">
+                            <i class="bi bi-map me-2"></i>Location
+                        </h6>
+                    </div>
+                    <div id="map" style="height:180px;"></div>
                 </div>
-            </div>
-        }
+            }
 
-        <!-- Report -->
-        @if (Model.InspectionReport != null)
-        {
-            <div class="card shadow-sm mb-3 border-success">
-                <div class="card-header bg-success text-white">
-                    <i class="bi bi-file-check me-2"></i>Inspection Report Ready
+            <!-- Pay Button -->
+            @if (Model.Status == MasterBeasProject.Models.BookingStatus.Accepted && isClient)
+            {
+                <div class="p-3 mb-3" style="background:rgba(239,159,39,.05);border:1px solid rgba(239,159,39,.2);border-radius:14px;">
+                    <p style="color:#aaa;font-size:13px;margin-bottom:10px;">
+                        <i class="bi bi-info-circle me-1" style="color:#EF9F27;"></i>
+                        Your booking is accepted. Complete payment to proceed.
+                    </p>
+                    <a asp-controller="Payment" asp-action="Checkout" asp-route-bookingId="@Model.Id"
+                       class="btn btn-primary w-100">
+                        <i class="bi bi-credit-card me-2"></i>Pay Now — @Model.Price JD
+                    </a>
                 </div>
-                <div class="card-body">
-                    <p class="mb-2">Report #@Model.InspectionReport.ReportNumber</p>
-                    <p class="mb-2">Overall Score: <strong>@Model.InspectionReport.OverallScore / 100</strong></p>
+            }
+
+            <!-- Report -->
+            @if (Model.InspectionReport != null)
+            {
+                <div class="p-4 mb-3" style="background:rgba(26,107,58,.08);border:1px solid rgba(26,107,58,.3);border-radius:14px;">
+                    <h6 class="fw-bold mb-2" style="color:#5DCAA5;">
+                        <i class="bi bi-file-check me-2"></i>Inspection Report Ready
+                    </h6>
+                    <p style="color:#888;font-size:13px;margin-bottom:4px;">Report #@Model.InspectionReport.ReportNumber</p>
+                    <p style="color:#aaa;font-size:13px;margin-bottom:12px;">
+                        Score: <strong style="color:#5DCAA5;">@Model.InspectionReport.OverallScore / 100</strong>
+                    </p>
                     <a asp-controller="Report" asp-action="Download" asp-route-id="@Model.InspectionReport.Id"
-                       class="btn btn-success w-100">
+                       class="btn w-100" style="background:rgba(26,107,58,.2);color:#5DCAA5;border:1px solid rgba(26,107,58,.4);">
                         <i class="bi bi-download me-2"></i>Download PDF
                     </a>
                 </div>
-            </div>
-        }
-    </div>
+            }
 
+            <!-- Back Button -->
+            @if (isClient)
+            {
+                <a asp-action="MyBookings" class="btn btn-outline-secondary w-100">
+                    <i class="bi bi-arrow-left me-2"></i>Back to My Bookings
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Engineer" asp-action="Dashboard" class="btn btn-outline-secondary w-100">
+                    <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            }
+        </div>
 
-    @if (Model.Status == MasterBeasProject.Models.BookingStatus.Accepted && isClient)
-    {
-        <a asp-controller="Payment" asp-action="Checkout" asp-route-bookingId="@Model.Id"
-           class="btn btn-warning w-100 mt-2">
-            <i class="bi bi-credit-card me-2"></i>Pay Now — @Model.Price JD
-        </a>
-    }
+        <!-- Right Column — Chat -->
+        <div class="col-md-7">
+            <div class="d-flex flex-column" style="background:#111;border:1px solid #222;border-radius:14px;overflow:hidden;height:100%;min-height:500px;">
 
+                <!-- Chat Header -->
+                <div class="p-3 d-flex align-items-center gap-2" style="border-bottom:1px solid #222;">
+                    <i class="bi bi-chat-dots" style="color:#EF9F27;"></i>
+                    <span class="fw-bold" style="font-size:14px;">Chat</span>
+                    <span style="color:#555;font-size:12px;">— between client & engineer</span>
+                </div>
 
-
-    <!-- Chat -->
-    <div class="col-md-7">
-        <div class="card shadow-sm">
-            <div class="card-header">
-                <i class="bi bi-chat-dots me-2"></i>Chat
-            </div>
-            <div class="card-body p-0">
                 <!-- Messages -->
-                <div id="chatBox" style="height:350px;overflow-y:auto;padding:16px;">
+                <div id="chatBox" class="flex-grow-1" style="overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px;">
                     @if (!Model.ChatMessages.Any())
                     {
-                        <p class="text-muted text-center mt-5">No messages yet. Start the conversation!</p>
+                        <div class="text-center my-auto">
+                            <i class="bi bi-chat" style="font-size:36px;color:#333;"></i>
+                            <p class="mt-2" style="color:#555;font-size:13px;">No messages yet. Start the conversation!</p>
+                        </div>
                     }
                     @foreach (var msg in Model.ChatMessages.OrderBy(m => m.SentAt))
                     {
-                        <div class="mb-3 @(msg.SenderId == Model.ClientId ? "text-end" : "")">
-                            <small class="text-muted d-block">@msg.Sender?.FullName — @msg.SentAt.ToString("hh:mm tt")</small>
-                            <span class="badge @(msg.SenderId == Model.ClientId ? "bg-primary" : "bg-secondary") text-wrap"
-                                  style="max-width:75%;white-space:normal;text-align:left;">
+                        bool isMine = msg.SenderId == Model.ClientId && isClient || msg.SenderId != Model.ClientId && isEngineer;
+                        <div class="@(isMine ? "align-self-end text-end" : "align-self-start")" style="max-width:75%;">
+                            <small style="color:#555;font-size:11px;display:block;margin-bottom:3px;">
+                                @msg.Sender?.FullName — @msg.SentAt.ToString("hh:mm tt")
+                            </small>
+                            <span class="d-inline-block px-3 py-2"
+                                  style="background:@(isMine ? "rgba(239,159,39,.15)" : "#1a1a1a");
+                                             color:@(isMine ? "#FAC775" : "#ccc");
+                                             border:1px solid @(isMine ? "rgba(239,159,39,.3)" : "#2a2a2a");
+                                             border-radius:12px;font-size:13px;line-height:1.5;white-space:pre-wrap;word-break:break-word;">
                                 @msg.Message
                             </span>
                         </div>
@@ -149,28 +235,19 @@
                 @if (Model.Status != MasterBeasProject.Models.BookingStatus.Cancelled &&
                                 Model.Status != MasterBeasProject.Models.BookingStatus.Rejected)
                 {
-                    <div class="border-top p-3 d-flex gap-2">
+                    <div class="p-3 d-flex gap-2" style="border-top:1px solid #222;">
                         <input type="text" id="messageInput" class="form-control"
-                               placeholder="Type a message..." maxlength="1000" />
-                        <button id="sendBtn" class="btn btn-primary">
+                               placeholder="Type a message..." maxlength="1000"
+                               style="border-radius:10px;" />
+                        <button id="sendBtn" class="btn btn-primary px-3" style="border-radius:10px;">
                             <i class="bi bi-send"></i>
                         </button>
                     </div>
                 }
             </div>
         </div>
-    </div>
-</div>
 
-<div class="mt-3">
-    @if (isClient)
-    {
-        <a asp-action="MyBookings" class="btn btn-outline-secondary">Back to My Bookings</a>
-    }
-    else
-    {
-        <a asp-controller="Engineer" asp-action="Dashboard" class="btn btn-outline-secondary">Back to Dashboard</a>
-    }
+    </div>
 </div>
 
 @section Scripts {
@@ -221,11 +298,19 @@
 
         function appendMessage(sender, message, time, isMine) {
             const div = document.createElement("div");
-            div.className = "mb-3" + (isMine ? " text-end" : "");
-            div.innerHTML = `<small class="text-muted d-block">${sender} — ${time}</small>
-                <span class="badge ${isMine ? 'bg-primary' : 'bg-secondary'} text-wrap"
-                      style="max-width:75%;white-space:normal;text-align:left;">${message}</span>`;
+            div.className = (isMine ? "align-self-end text-end" : "align-self-start");
+            div.style.maxWidth = "75%";
+            div.innerHTML = `
+                <small style="color:#555;font-size:11px;display:block;margin-bottom:3px;">${sender} — ${time}</small>
+                <span class="d-inline-block px-3 py-2"
+                      style="background:${isMine ? 'rgba(239,159,39,.15)' : '#1a1a1a'};
+                             color:${isMine ? '#FAC775' : '#ccc'};
+                             border:1px solid ${isMine ? 'rgba(239,159,39,.3)' : '#2a2a2a'};
+                             border-radius:12px;font-size:13px;line-height:1.5;white-space:pre-wrap;word-break:break-word;">
+                    ${message}
+                </span>`;
             chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
 
         chatBox.scrollTop = chatBox.scrollHeight;
