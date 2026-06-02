@@ -20,10 +20,16 @@ namespace MasterBeasProject.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult>Index(string? specialization, decimal? maxPrice)
+        public async Task<IActionResult> Index(
+     string? specialization,
+     decimal? maxPrice,
+     string? city,
+     string? engineerName)
         {
-
-            var query = _context.EngineerProfiles.Include(e => e.User).Where(e => e.IsAvailable && e.User.IsActive).AsQueryable();
+            var query = _context.EngineerProfiles
+                .Include(e => e.User)
+                .Where(e => e.IsAvailable && e.User.IsActive)
+                .AsQueryable();
 
             if (!string.IsNullOrEmpty(specialization))
                 query = query.Where(e => e.Specialization.Contains(specialization));
@@ -31,19 +37,19 @@ namespace MasterBeasProject.Controllers
             if (maxPrice.HasValue)
                 query = query.Where(e => e.InspectionPrice <= maxPrice.Value);
 
+            if (!string.IsNullOrEmpty(city))
+                query = query.Where(e => e.City != null && e.City.Contains(city));
+
+            if (!string.IsNullOrEmpty(engineerName))
+                query = query.Where(e =>
+                    e.User.FullName.Contains(engineerName));
+
             var engineers = await query
                 .OrderByDescending(e => e.AverageRating)
                 .ToListAsync();
 
-            ViewBag.Specialization = specialization;
-            ViewBag.MaxPrice = maxPrice;
-
             return View(engineers);
-
-
         }
-
-
         public async Task<IActionResult> Details(int id)
         {
             var engineer = await _context.EngineerProfiles
@@ -230,6 +236,146 @@ namespace MasterBeasProject.Controllers
             return RedirectToAction("Dashboard");
         }
 
+
+        [Authorize(Roles = "Engineer")]
+        public async Task<IActionResult> EditProfile()
+        {
+            var userId = _userManager.GetUserId(User);
+
+            var profile = await _context.EngineerProfiles
+                .FirstOrDefaultAsync(e => e.UserId == userId);
+
+            if (profile == null)
+                return RedirectToAction("CompleteProfile");
+
+            return View(profile);
+        }
+
+        [Authorize(Roles = "Engineer")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProfile(EngineerProfile model, IFormFile? profileImage)
+        {
+            ModelState.Remove("User");
+            ModelState.Remove("Bookings");
+            ModelState.Remove("Reviews");
+            ModelState.Remove("UserId");
+
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var existingProfile = await _context.EngineerProfiles
+                .FirstOrDefaultAsync(e => e.Id == model.Id);
+
+            if (existingProfile == null)
+                return NotFound();
+
+            existingProfile.Specialization = model.Specialization;
+            existingProfile.YearsOfExperience = model.YearsOfExperience;
+            existingProfile.InspectionPrice = model.InspectionPrice;
+            existingProfile.Bio = model.Bio;
+            existingProfile.LicenseNumber = model.LicenseNumber;
+            existingProfile.City = model.City;
+
+            if (profileImage != null && profileImage.Length > 0)
+            {
+                var user = await _userManager.FindByIdAsync(existingProfile.UserId);
+
+                var uploadsFolder = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot/uploads/profiles");
+
+                Directory.CreateDirectory(uploadsFolder);
+
+                var fileName =
+                    $"{existingProfile.UserId}_{Guid.NewGuid()}{Path.GetExtension(profileImage.FileName)}";
+
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await profileImage.CopyToAsync(stream);
+                }
+
+                user!.ProfileImageUrl = $"/uploads/profiles/{fileName}";
+                await _userManager.UpdateAsync(user);
+            }
+
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Profile updated successfully.";
+
+            return RedirectToAction("Dashboard");
+        }
+
+        [Authorize(Roles = "Engineer")]
+        public async Task<IActionResult> ManageAvailability()
+        {
+            var userId = _userManager.GetUserId(User);
+
+            var profile = await _context.EngineerProfiles
+                .FirstOrDefaultAsync(e => e.UserId == userId);
+
+            if (profile == null)
+                return RedirectToAction("CompleteProfile");
+
+            var availability = await _context.EngineerAvailabilities
+                .Where(a => a.EngineerProfileId == profile.Id)
+                .ToListAsync();
+
+            return View(availability);
+        }
+
+
+
+
+        [Authorize(Roles = "Engineer")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ManageAvailability(
+    DayOfWeek dayOfWeek,
+    TimeSpan startTime,
+    TimeSpan endTime)
+        {
+            var userId = _userManager.GetUserId(User);
+
+            var profile = await _context.EngineerProfiles
+                .FirstOrDefaultAsync(e => e.UserId == userId);
+
+            if (profile == null)
+                return RedirectToAction("CompleteProfile");
+
+            var availability = new EngineerAvailability
+            {
+                EngineerProfileId = profile.Id,
+                DayOfWeek = dayOfWeek,
+                StartTime = startTime,
+                EndTime = endTime
+            };
+
+            _context.EngineerAvailabilities.Add(availability);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(ManageAvailability));
+        }
+
+
+        [Authorize(Roles = "Engineer")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAvailability(int id)
+        {
+            var availability = await _context.EngineerAvailabilities
+                .FirstOrDefaultAsync(a => a.Id == id);
+
+            if (availability != null)
+            {
+                _context.EngineerAvailabilities.Remove(availability);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(ManageAvailability));
+        }
 
 
     }

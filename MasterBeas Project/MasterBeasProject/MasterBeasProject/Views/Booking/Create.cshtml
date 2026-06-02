@@ -1,7 +1,16 @@
 ﻿@model MasterBeasProject.Models.PropertyDetails
+
+@{
+    var availability = ViewBag.Availability as List<MasterBeasProject.Models.EngineerAvailability>;
+}
 @{
     ViewData["Title"] = "Book Inspection";
     var engineer = ViewBag.Engineer as MasterBeasProject.Models.EngineerProfile;
+}
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div asp-validation-summary="All" class="alert alert-danger"></div>
 }
 
 <div class="container py-4">
@@ -64,17 +73,37 @@
                             <small style="color:#555;">Click on the map to pin location automatically.</small>
                         </div>
 
+                        @if (availability != null && availability.Any())
+                        {
+                            <div class="alert alert-info mb-3">
+                                <h6 class="mb-2">Engineer Available Schedule</h6>
+
+                                <ul class="mb-0">
+                                    @foreach (var item in availability)
+                                    {
+                                        <li>
+                                            @item.DayOfWeek
+                                            (@item.StartTime.ToString(@"hh\:mm")
+                                            -
+                                            @item.EndTime.ToString(@"hh\:mm"))
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
                         <!-- Date -->
                         <div class="mb-4">
                             <label class="form-label fw-bold">Preferred Inspection Date</label>
-                            <input type="datetime-local" name="inspectionDate" class="form-control" required />
+                            <input type="date" name="inspectionDate" class="form-control" required />
                         </div>
-
+                       
                         <div style="border-top:1px solid #222;padding-top:20px;margin-bottom:20px;">
                             <h6 class="fw-bold mb-3" style="color:#EF9F27;">
                                 <i class="bi bi-building me-2"></i>Property Details
                             </h6>
                         </div>
+
+
 
                         <!-- Property Type -->
                         <div class="mb-3">

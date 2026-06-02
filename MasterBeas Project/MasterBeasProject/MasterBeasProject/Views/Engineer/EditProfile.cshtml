@@ -1,0 +1,84 @@
+﻿@model MasterBeasProject.Models.EngineerProfile
+@{
+    ViewData["Title"] = "Complete Your Profile";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h4 class="mb-0">Edit Your Engineer Profile</h4>
+                <small class="text-muted">Update your profile information</small>
+            </div>
+            <div class="card-body">
+                <form asp-action="EditProfile" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="Id" />
+
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Specialization" class="form-label"></label>
+                        <input asp-for="Specialization" class="form-control" placeholder="e.g. Civil Engineering" />
+                        <span asp-validation-for="Specialization" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="YearsOfExperience" class="form-label"></label>
+                            <input asp-for="YearsOfExperience" type="number" class="form-control" min="1" max="50" />
+                            <span asp-validation-for="YearsOfExperience" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="InspectionPrice" class="form-label"></label>
+                            <div class="input-group">
+                                <input asp-for="InspectionPrice" type="number" class="form-control" min="10" step="0.5" />
+                                <span class="input-group-text">JD</span>
+                            </div>
+                            <span asp-validation-for="InspectionPrice" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="LicenseNumber" class="form-label"></label>
+                        <input asp-for="LicenseNumber" class="form-control" placeholder="Professional license number (optional)" />
+                        <span asp-validation-for="LicenseNumber" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Bio" class="form-label"></label>
+                        <textarea asp-for="Bio" class="form-control" rows="4"
+                                  placeholder="Tell clients about your experience and expertise..."></textarea>
+                        <span asp-validation-for="Bio" class="text-danger small"></span>
+                    </div>
+
+
+                    <div class="mb-3">
+                        <label asp-for="City" class="form-label"></label>
+                        <textarea asp-for="City" class="form-control" rows="4"
+                                  placeholder="Where the City are Worked"></textarea>
+                        <span asp-validation-for="City" class="text-danger small"></span>
+                    </div>
+
+
+
+                    <div class="mb-3">
+                        <label class="form-label">Profile Image (optional)</label>
+                        <input type="file" name="profileImage" class="form-control" accept="image/jpeg,image/png,image/webp" />
+                        <small class="text-muted">Max 2MB. JPG, PNG, or WebP.</small>
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            Update Profile
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+`

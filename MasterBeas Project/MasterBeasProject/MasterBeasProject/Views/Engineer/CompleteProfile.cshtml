@@ -49,6 +49,16 @@
                         <span asp-validation-for="Bio" class="text-danger small"></span>
                     </div>
 
+
+                    <div class="mb-3">
+                        <label asp-for="City" class="form-label"></label>
+                        <textarea asp-for="City" class="form-control" rows="4"
+                                  placeholder="Where the City are Worked"></textarea>
+                        <span asp-validation-for="City" class="text-danger small"></span>
+                    </div>
+
+
+
                     <div class="mb-3">
                         <label class="form-label">Profile Image (optional)</label>
                         <input type="file" name="profileImage" class="form-control" accept="image/jpeg,image/png,image/webp" />

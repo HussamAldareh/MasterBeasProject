@@ -3,112 +3,137 @@
     ViewData["Title"] = "Admin Dashboard";
 }
 
-<h2 class="mb-4">Admin Dashboard</h2>
-
-<!-- Stats -->
-<div class="row row-cols-2 row-cols-md-3 g-3 mb-4">
-    <div class="col">
-        <div class="card text-center shadow-sm border-0 bg-primary text-white">
-            <div class="card-body">
-                <h3>@ViewBag.TotalUsers</h3>
-                <p class="mb-0">Total Users</p>
+<!-- Header -->
+<div style="background:linear-gradient(180deg,#111 0%,#0a0a0a 100%);border-bottom:1px solid #222;padding:35px 0 25px;">
+    <div class="container">
+        <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center justify-content-center rounded-circle"
+                 style="width:50px;height:50px;background:rgba(239,159,39,.1);border:1px solid rgba(239,159,39,.3);">
+                <i class="bi bi-shield-check" style="color:#EF9F27;font-size:20px;"></i>
             </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card text-center shadow-sm border-0 bg-success text-white">
-            <div class="card-body">
-                <h3>@ViewBag.TotalEngineers</h3>
-                <p class="mb-0">Engineers</p>
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card text-center shadow-sm border-0 bg-info text-white">
-            <div class="card-body">
-                <h3>@ViewBag.TotalBookings</h3>
-                <p class="mb-0">Total Bookings</p>
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card text-center shadow-sm border-0 bg-warning text-dark">
-            <div class="card-body">
-                <h3>@ViewBag.PendingBookings</h3>
-                <p class="mb-0">Pending</p>
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card text-center shadow-sm border-0 bg-secondary text-white">
-            <div class="card-body">
-                <h3>@ViewBag.CompletedBookings</h3>
-                <p class="mb-0">Completed</p>
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card text-center shadow-sm border-0 bg-dark text-white">
-            <div class="card-body">
-                <h3>@ViewBag.TotalReports</h3>
-                <p class="mb-0">Reports</p>
+            <div>
+                <h2 class="fw-bold mb-0" style="font-size:22px;">
+                    Admin <span style="color:#EF9F27;">Dashboard</span>
+                </h2>
+                <p style="color:#666;margin:0;font-size:13px;">Platform overview and management</p>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Quick Links -->
-<div class="d-flex gap-2 mb-4">
-    <a asp-action="Users" class="btn btn-outline-primary">Manage Users</a>
-    <a asp-action="Engineers" class="btn btn-outline-success">Manage Engineers</a>
-    <a asp-action="Bookings" class="btn btn-outline-info">All Bookings</a>
-</div>
+<div class="container py-4">
 
-<!-- Recent Bookings -->
-<h5 class="mb-3">Recent Bookings</h5>
-<div class="table-responsive">
-    <table class="table table-hover align-middle">
-        <thead class="table-light">
-            <tr>
-                <th>#</th>
-                <th>Client</th>
-                <th>Engineer</th>
-                <th>Property</th>
-                <th>Date</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var booking in Model)
-            {
-                <tr>
-                    <td>@booking.Id</td>
-                    <td>@booking.Client?.FullName</td>
-                    <td>@booking.EngineerProfile?.User?.FullName</td>
-                    <td>@(booking.PropertyAddress.Length > 25 ? booking.PropertyAddress.Substring(0, 25) + "..." : booking.PropertyAddress)</td>
-                    <td>@booking.InspectionDate.ToString("MMM dd, yyyy")</td>
-                    <td>
-                        @switch (booking.Status)
-                        {
-                            case MasterBeasProject.Models.BookingStatus.Pending:
-                                <span class="badge bg-warning text-dark">Pending</span>
-                                break;
-                            case MasterBeasProject.Models.BookingStatus.Accepted:
-                                <span class="badge bg-success">Accepted</span>
-                                break;
-                            case MasterBeasProject.Models.BookingStatus.Completed:
-                                <span class="badge bg-primary">Completed</span>
-                                break;
-                            case MasterBeasProject.Models.BookingStatus.Rejected:
-                                <span class="badge bg-danger">Rejected</span>
-                                break;
-                            default:
-                                <span class="badge bg-secondary">@booking.Status</span>
-                                break;
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <!-- Stats -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-2">
+            <div class="p-3 text-center" style="background:#111;border:1px solid #222;border-radius:14px;">
+                <div style="font-size:28px;font-weight:700;color:#7BB8F0;">@ViewBag.TotalUsers</div>
+                <div style="color:#666;font-size:12px;margin-top:4px;">Users</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <div class="p-3 text-center" style="background:#111;border:1px solid #222;border-radius:14px;">
+                <div style="font-size:28px;font-weight:700;color:#EF9F27;">@ViewBag.TotalEngineers</div>
+                <div style="color:#666;font-size:12px;margin-top:4px;">Engineers</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <div class="p-3 text-center" style="background:#111;border:1px solid #222;border-radius:14px;">
+                <div style="font-size:28px;font-weight:700;color:#5DCAA5;">@ViewBag.TotalBookings</div>
+                <div style="color:#666;font-size:12px;margin-top:4px;">Bookings</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <div class="p-3 text-center" style="background:#111;border:1px solid rgba(239,159,39,.2);border-radius:14px;">
+                <div style="font-size:28px;font-weight:700;color:#EF9F27;">@ViewBag.PendingBookings</div>
+                <div style="color:#666;font-size:12px;margin-top:4px;">Pending</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <div class="p-3 text-center" style="background:#111;border:1px solid #222;border-radius:14px;">
+                <div style="font-size:28px;font-weight:700;color:#5DCAA5;">@ViewBag.CompletedBookings</div>
+                <div style="color:#666;font-size:12px;margin-top:4px;">Completed</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <div class="p-3 text-center" style="background:#111;border:1px solid #222;border-radius:14px;">
+                <div style="font-size:28px;font-weight:700;color:#7BB8F0;">@ViewBag.TotalReports</div>
+                <div style="color:#666;font-size:12px;margin-top:4px;">Reports</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="d-flex gap-2 mb-4 flex-wrap">
+        <a asp-action="Users"
+           style="background:rgba(123,184,240,.1);color:#7BB8F0;border:1px solid rgba(123,184,240,.3);border-radius:10px;padding:8px 18px;font-size:13px;text-decoration:none;">
+            <i class="bi bi-people me-2"></i>Manage Users
+        </a>
+        <a asp-action="Engineers"
+           style="background:rgba(239,159,39,.1);color:#EF9F27;border:1px solid rgba(239,159,39,.3);border-radius:10px;padding:8px 18px;font-size:13px;text-decoration:none;">
+            <i class="bi bi-person-badge me-2"></i>Manage Engineers
+        </a>
+        <a asp-action="Bookings"
+           style="background:rgba(93,202,165,.1);color:#5DCAA5;border:1px solid rgba(93,202,165,.3);border-radius:10px;padding:8px 18px;font-size:13px;text-decoration:none;">
+            <i class="bi bi-calendar-check me-2"></i>All Bookings
+        </a>
+    </div>
+
+    <!-- Recent Bookings -->
+    <div style="background:#111;border:1px solid #222;border-radius:14px;overflow:hidden;">
+        <div class="p-4" style="border-bottom:1px solid #222;">
+            <h5 class="fw-bold mb-0">Recent Bookings</h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr style="border-bottom:1px solid #1a1a1a;">
+                        <th style="color:#EF9F27;font-size:12px;text-transform:uppercase;letter-spacing:.5px;padding:14px 16px;font-weight:500;background:#111;">#</th>
+                        <th style="color:#EF9F27;font-size:12px;text-transform:uppercase;letter-spacing:.5px;padding:14px 16px;font-weight:500;background:#111;">Client</th>
+                        <th style="color:#EF9F27;font-size:12px;text-transform:uppercase;letter-spacing:.5px;padding:14px 16px;font-weight:500;background:#111;">Engineer</th>
+                        <th style="color:#EF9F27;font-size:12px;text-transform:uppercase;letter-spacing:.5px;padding:14px 16px;font-weight:500;background:#111;">Property</th>
+                        <th style="color:#EF9F27;font-size:12px;text-transform:uppercase;letter-spacing:.5px;padding:14px 16px;font-weight:500;background:#111;">Date</th>
+                        <th style="color:#EF9F27;font-size:12px;text-transform:uppercase;letter-spacing:.5px;padding:14px 16px;font-weight:500;background:#111;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var booking in Model)
+                    {
+                        <tr style="border-bottom:1px solid #1a1a1a;">
+                            <td style="padding:14px 16px;color:#666;font-size:13px;">@booking.Id</td>
+                            <td style="padding:14px 16px;color:#ddd;font-size:13px;">@booking.Client?.FullName</td>
+                            <td style="padding:14px 16px;color:#aaa;font-size:13px;">@booking.EngineerProfile?.User?.FullName</td>
+                            <td style="padding:14px 16px;color:#aaa;font-size:13px;">
+                                @(booking.PropertyAddress.Length > 25 ? booking.PropertyAddress.Substring(0, 25) + "..." : booking.PropertyAddress)
+                            </td>
+                            <td style="padding:14px 16px;color:#aaa;font-size:13px;">@booking.InspectionDate.ToString("MMM dd, yyyy")</td>
+                            <td style="padding:14px 16px;">
+                                @switch (booking.Status)
+                                {
+                                    case MasterBeasProject.Models.BookingStatus.Pending:
+                                        <span style="background:rgba(239,159,39,.15);color:#EF9F27;border:1px solid rgba(239,159,39,.3);padding:3px 10px;border-radius:20px;font-size:11px;">Pending</span>
+                                        break;
+                                    case MasterBeasProject.Models.BookingStatus.Accepted:
+                                        <span style="background:rgba(26,107,58,.2);color:#5DCAA5;border:1px solid rgba(26,107,58,.3);padding:3px 10px;border-radius:20px;font-size:11px;">Accepted</span>
+                                        break;
+                                    case MasterBeasProject.Models.BookingStatus.InProgress:
+                                        <span style="background:rgba(24,95,165,.2);color:#7BB8F0;border:1px solid rgba(24,95,165,.3);padding:3px 10px;border-radius:20px;font-size:11px;">In Progress</span>
+                                        break;
+                                    case MasterBeasProject.Models.BookingStatus.Completed:
+                                        <span style="background:rgba(24,95,165,.2);color:#7BB8F0;border:1px solid rgba(24,95,165,.3);padding:3px 10px;border-radius:20px;font-size:11px;">Completed</span>
+                                        break;
+                                    case MasterBeasProject.Models.BookingStatus.Rejected:
+                                        <span style="background:rgba(139,26,26,.2);color:#F09595;border:1px solid rgba(139,26,26,.3);padding:3px 10px;border-radius:20px;font-size:11px;">Rejected</span>
+                                        break;
+                                    default:
+                                        <span style="background:#1a1a1a;color:#666;border:1px solid #333;padding:3px 10px;border-radius:20px;font-size:11px;">@booking.Status</span>
+                                        break;
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

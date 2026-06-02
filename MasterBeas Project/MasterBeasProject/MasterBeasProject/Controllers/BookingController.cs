@@ -32,8 +32,18 @@ namespace MasterBeasProject.Controllers
             if (engineer == null || !engineer.IsAvailable)
                 return NotFound();
 
+
+            var availability = await _context.EngineerAvailabilities
+    .Where(a => a.EngineerProfileId == engineerId)
+    .OrderBy(a => a.DayOfWeek)
+    .ToListAsync();
+
+            ViewBag.Availability = availability;
+
             ViewBag.Engineer = engineer;
             ViewBag.EngineerId = engineerId;
+
+
 
             return View(new PropertyDetails());
         }
@@ -52,6 +62,19 @@ namespace MasterBeasProject.Controllers
             if (engineer == null || !engineer.IsAvailable)
                 return NotFound();
 
+            var selectedDay = inspectionDate.DayOfWeek;
+
+            var isAvailableOnThisDay = await _context.EngineerAvailabilities
+                .AnyAsync(a =>
+                    a.EngineerProfileId == engineerId &&
+                    a.DayOfWeek == selectedDay);
+
+            if (!isAvailableOnThisDay)
+            {
+                ModelState.AddModelError("inspectionDate",
+                    "Engineer is not available on the selected day.");
+            }
+
             // Validation
             ModelState.Remove("Booking");
             ModelState.Remove("BookingId");
@@ -60,10 +83,18 @@ namespace MasterBeasProject.Controllers
                 ModelState.AddModelError("propertyAddress", "Property address is required.");
 
 
+
             if (!ModelState.IsValid)
             {
+                var availability = await _context.EngineerAvailabilities
+                    .Where(a => a.EngineerProfileId == engineerId)
+                    .OrderBy(a => a.DayOfWeek)
+                    .ToListAsync();
+
+                ViewBag.Availability = availability;
                 ViewBag.Engineer = engineer;
                 ViewBag.EngineerId = engineerId;
+
                 return View(propertyDetails);
             }
 

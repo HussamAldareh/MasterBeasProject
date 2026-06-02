@@ -45,6 +45,9 @@ namespace MasterBeasProject.Models
         [Display(Name = "Total Reviews")]
         public int TotalReviews { get; set; } = 0;
 
+        public string? City { get; set; }   
+
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigation

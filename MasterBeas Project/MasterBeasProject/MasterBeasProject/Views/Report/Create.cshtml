@@ -4,86 +4,165 @@
     var booking = ViewBag.Booking as MasterBeasProject.Models.Booking;
 }
 
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card shadow-sm">
-            <div class="card-header">
-                <h5 class="mb-0">Inspection Report</h5>
-                <small class="text-muted">
-                    @booking?.Client?.FullName — @booking?.PropertyAddress
-                </small>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <!-- Header -->
+            <div class="p-4 mb-4 d-flex align-items-center justify-content-between"
+                 style="background:rgba(239,159,39,.05);border:1px solid rgba(239,159,39,.2);border-radius:14px;">
+                <div>
+                    <h5 class="fw-bold mb-1" style="color:#EF9F27;">
+                        <i class="bi bi-file-earmark-text me-2"></i>Inspection Report
+                    </h5>
+                    <p class="mb-0" style="color:#888;font-size:13px;">
+                        <i class="bi bi-person me-1"></i>@booking?.Client?.FullName
+                        <span style="color:#444;margin:0 6px;">·</span>
+                        <i class="bi bi-geo-alt me-1"></i>@booking?.PropertyAddress
+                    </p>
+                </div>
+                <div class="text-end">
+                    <div style="color:#EF9F27;font-weight:700;font-size:18px;">@booking?.Price JD</div>
+                    <small style="color:#555;">Inspection Fee</small>
+                </div>
             </div>
-            <div class="card-body">
+
+            <!-- Form -->
+            <div style="background:#111;border:1px solid #222;border-radius:14px;overflow:hidden;">
                 <form asp-action="Create" method="post" enctype="multipart/form-data">
-                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger m-4"></div>
                     <input asp-for="BookingId" type="hidden" />
 
                     <!-- Structural -->
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Structural Condition</label>
-                        <select asp-for="StructuralCondition" class="form-select"
-                                asp-items="Html.GetEnumSelectList<MasterBeasProject.Models.ConditionStatus>()"></select>
-                        <textarea asp-for="StructuralNotes" class="form-control mt-2" rows="2" placeholder="Notes..."></textarea>
+                    <div class="p-4" style="border-bottom:1px solid #1a1a1a;">
+                        <label class="form-label fw-bold mb-3" style="color:#EF9F27;font-size:13px;">
+                            <i class="bi bi-building me-2"></i>Structural Condition
+                        </label>
+                        <div class="row g-3">
+                            <div class="col-md-5">
+                                <select asp-for="StructuralCondition" class="form-select"
+                                        asp-items="Html.GetEnumSelectList<MasterBeasProject.Models.ConditionStatus>()"></select>
+                            </div>
+                            <div class="col-md-7">
+                                <textarea asp-for="StructuralNotes" class="form-control" rows="2" placeholder="Add notes..."></textarea>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Electrical -->
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Electrical Condition</label>
-                        <select asp-for="ElectricalCondition" class="form-select"
-                                asp-items="Html.GetEnumSelectList<MasterBeasProject.Models.ConditionStatus>()"></select>
-                        <textarea asp-for="ElectricalNotes" class="form-control mt-2" rows="2" placeholder="Notes..."></textarea>
+                    <div class="p-4" style="border-bottom:1px solid #1a1a1a;">
+                        <label class="form-label fw-bold mb-3" style="color:#EF9F27;font-size:13px;">
+                            <i class="bi bi-lightning-charge me-2"></i>Electrical Condition
+                        </label>
+                        <div class="row g-3">
+                            <div class="col-md-5">
+                                <select asp-for="ElectricalCondition" class="form-select"
+                                        asp-items="Html.GetEnumSelectList<MasterBeasProject.Models.ConditionStatus>()"></select>
+                            </div>
+                            <div class="col-md-7">
+                                <textarea asp-for="ElectricalNotes" class="form-control" rows="2" placeholder="Add notes..."></textarea>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Plumbing -->
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Plumbing Condition</label>
-                        <select asp-for="PlumbingCondition" class="form-select"
-                                asp-items="Html.GetEnumSelectList<MasterBeasProject.Models.ConditionStatus>()"></select>
-                        <textarea asp-for="PlumbingNotes" class="form-control mt-2" rows="2" placeholder="Notes..."></textarea>
+                    <div class="p-4" style="border-bottom:1px solid #1a1a1a;">
+                        <label class="form-label fw-bold mb-3" style="color:#EF9F27;font-size:13px;">
+                            <i class="bi bi-droplet me-2"></i>Plumbing Condition
+                        </label>
+                        <div class="row g-3">
+                            <div class="col-md-5">
+                                <select asp-for="PlumbingCondition" class="form-select"
+                                        asp-items="Html.GetEnumSelectList<MasterBeasProject.Models.ConditionStatus>()"></select>
+                            </div>
+                            <div class="col-md-7">
+                                <textarea asp-for="PlumbingNotes" class="form-control" rows="2" placeholder="Add notes..."></textarea>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Insulation -->
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Insulation & Moisture</label>
-                        <select asp-for="InsulationCondition" class="form-select"
-                                asp-items="Html.GetEnumSelectList<MasterBeasProject.Models.ConditionStatus>()"></select>
-                        <textarea asp-for="InsulationNotes" class="form-control mt-2" rows="2" placeholder="Notes..."></textarea>
+                    <div class="p-4" style="border-bottom:1px solid #1a1a1a;">
+                        <label class="form-label fw-bold mb-3" style="color:#EF9F27;font-size:13px;">
+                            <i class="bi bi-shield me-2"></i>Insulation & Moisture
+                        </label>
+                        <div class="row g-3">
+                            <div class="col-md-5">
+                                <select asp-for="InsulationCondition" class="form-select"
+                                        asp-items="Html.GetEnumSelectList<MasterBeasProject.Models.ConditionStatus>()"></select>
+                            </div>
+                            <div class="col-md-7">
+                                <textarea asp-for="InsulationNotes" class="form-control" rows="2" placeholder="Add notes..."></textarea>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Finishing -->
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Finishing Condition</label>
-                        <select asp-for="FinishingCondition" class="form-select"
-                                asp-items="Html.GetEnumSelectList<MasterBeasProject.Models.ConditionStatus>()"></select>
-                        <textarea asp-for="FinishingNotes" class="form-control mt-2" rows="2" placeholder="Notes..."></textarea>
+                    <div class="p-4" style="border-bottom:1px solid #1a1a1a;">
+                        <label class="form-label fw-bold mb-3" style="color:#EF9F27;font-size:13px;">
+                            <i class="bi bi-paint-bucket me-2"></i>Finishing Condition
+                        </label>
+                        <div class="row g-3">
+                            <div class="col-md-5">
+                                <select asp-for="FinishingCondition" class="form-select"
+                                        asp-items="Html.GetEnumSelectList<MasterBeasProject.Models.ConditionStatus>()"></select>
+                            </div>
+                            <div class="col-md-7">
+                                <textarea asp-for="FinishingNotes" class="form-control" rows="2" placeholder="Add notes..."></textarea>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Overall Score -->
-                    <div class="mb-3">
-                        <label asp-for="OverallScore" class="form-label fw-bold"></label>
-                        <input asp-for="OverallScore" type="number" class="form-control" min="0" max="100" />
+                    <div class="p-4" style="border-bottom:1px solid #1a1a1a;">
+                        <label class="form-label fw-bold mb-3" style="color:#EF9F27;font-size:13px;">
+                            <i class="bi bi-star me-2"></i>Overall Score
+                        </label>
+                        <div class="d-flex align-items-center gap-3">
+                            <input asp-for="OverallScore" type="range" class="form-range flex-grow-1"
+                                   min="0" max="100" step="1"
+                                   oninput="document.getElementById('scoreDisplay').textContent=this.value;updateScoreColor(this.value)" />
+                            <div id="scoreDisplay"
+                                 style="min-width:60px;text-align:center;font-size:28px;font-weight:700;color:#EF9F27;">
+                                @Model.OverallScore
+                            </div>
+                        </div>
                         <span asp-validation-for="OverallScore" class="text-danger small"></span>
                     </div>
 
                     <!-- Summary -->
-                    <div class="mb-3">
-                        <label asp-for="Summary" class="form-label fw-bold"></label>
-                        <textarea asp-for="Summary" class="form-control" rows="3"
-                                  placeholder="Overall summary and recommendations..."></textarea>
+                    <div class="p-4" style="border-bottom:1px solid #1a1a1a;">
+                        <label class="form-label fw-bold mb-3" style="color:#EF9F27;font-size:13px;">
+                            <i class="bi bi-card-text me-2"></i>Summary & Recommendations
+                        </label>
+                        <textarea asp-for="Summary" class="form-control" rows="4"
+                                  placeholder="Write a summary of the inspection findings and recommendations..."></textarea>
                         <span asp-validation-for="Summary" class="text-danger small"></span>
                     </div>
 
                     <!-- Images -->
-                    <div class="mb-4">
-                        <label class="form-label fw-bold">Inspection Photos (max 10)</label>
-                        <input type="file" name="images" class="form-control"
-                               accept="image/jpeg,image/png,image/webp" multiple />
-                        <small class="text-muted">Max 5MB per image. JPG, PNG, or WebP.</small>
+                    <div class="p-4" style="border-bottom:1px solid #1a1a1a;">
+                        <label class="form-label fw-bold mb-3" style="color:#EF9F27;font-size:13px;">
+                            <i class="bi bi-images me-2"></i>Inspection Photos
+                            <span style="color:#555;font-weight:400;">(max 10)</span>
+                        </label>
+                        <div class="p-4 text-center" style="border:2px dashed #333;border-radius:10px;">
+                            <i class="bi bi-cloud-upload" style="font-size:36px;color:#444;"></i>
+                            <p style="color:#666;font-size:13px;margin:8px 0;">Click to browse images</p>
+                            <input type="file" name="images" class="form-control"
+                                   accept="image/jpeg,image/png,image/webp" multiple
+                                   style="max-width:300px;margin:0 auto;" />
+                            <small style="color:#555;margin-top:6px;display:block;">Max 5MB per image — JPG, PNG, WebP</small>
+                        </div>
                     </div>
 
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-success btn-lg">Submit Report</button>
+                    <!-- Submit -->
+                    <div class="p-4">
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="bi bi-send me-2"></i>Submit Inspection Report
+                        </button>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -92,4 +171,11 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        function updateScoreColor(val) {
+            const display = document.getElementById('scoreDisplay');
+            val = parseInt(val);
+            display.style.color = val >= 70 ? '#5DCAA5' : val >= 40 ? '#EF9F27' : '#F09595';
+        }
+    </script>
 }

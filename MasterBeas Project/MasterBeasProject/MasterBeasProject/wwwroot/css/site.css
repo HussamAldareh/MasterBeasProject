@@ -39,6 +39,7 @@ body {
     background: var(--black) !important;
     border-bottom: 1px solid var(--gold-dark);
     padding: 12px 0;
+    height:80px
 }
 
 .navbar-brand {

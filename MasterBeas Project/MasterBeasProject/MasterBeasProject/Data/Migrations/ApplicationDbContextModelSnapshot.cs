@@ -191,6 +191,33 @@ namespace MasterBeasProject.Data.Migrations
                     b.ToTable("ChatMessages");
                 });
 
+            modelBuilder.Entity("MasterBeasProject.Models.EngineerAvailability", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DayOfWeek")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<int>("EngineerProfileId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EngineerProfileId");
+
+                    b.ToTable("EngineerAvailabilities");
+                });
+
             modelBuilder.Entity("MasterBeasProject.Models.EngineerProfile", b =>
                 {
                     b.Property<int>("Id")
@@ -205,6 +232,9 @@ namespace MasterBeasProject.Data.Migrations
                     b.Property<string>("Bio")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -639,6 +669,17 @@ namespace MasterBeasProject.Data.Migrations
                     b.Navigation("Booking");
 
                     b.Navigation("Sender");
+                });
+
+            modelBuilder.Entity("MasterBeasProject.Models.EngineerAvailability", b =>
+                {
+                    b.HasOne("MasterBeasProject.Models.EngineerProfile", "EngineerProfile")
+                        .WithMany()
+                        .HasForeignKey("EngineerProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EngineerProfile");
                 });
 
             modelBuilder.Entity("MasterBeasProject.Models.EngineerProfile", b =>

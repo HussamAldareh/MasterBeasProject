@@ -17,6 +17,7 @@ namespace MasterBeasProject.Data
         public DbSet<Review> Reviews { get; set; }
         public DbSet<ChatMessage> ChatMessages { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<EngineerAvailability> EngineerAvailabilities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
