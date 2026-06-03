@@ -2,292 +2,235 @@
     ViewData["Title"] = "Home";
 }
 
-<style>
-    /* Button styles for Hero Section */
-    .btn-primary-custom {
-        background-color: #EF9F27;
-        color: #111;
-        border: none;
-        font-weight: 600;
-        transition: background-color 0.2s ease;
-    }
-
-        .btn-primary-custom:hover {
-            background-color: #d88c21;
-            color: #111;
-        }
-
-    .btn-outline-custom {
-        color: #fff;
-        border: 1px solid #555;
-        font-weight: 600;
-        transition: all 0.2s ease;
-    }
-
-        .btn-outline-custom:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-color: #888;
-            color: #fff;
-        }
-</style>
-
-<div class="hero-section py-5" style="background-color: #0a0a0a;">
+<!-- Hero Section -->
+<div style="background:#0a0a0a;padding:100px 0 80px;">
     <div class="container">
         <div class="row align-items-center g-5">
-            <div class="col-md-6">
-                <h1 class="display-4 fw-bold mb-3" style="line-height:1.2; color:#fff;">
+
+            <!-- Left -->
+            <div class="col-lg-6">
+                <div class="mb-3">
+                    <span style="background:rgba(239,159,39,.1);color:#EF9F27;border:1px solid rgba(239,159,39,.2);padding:6px 16px;border-radius:20px;font-size:13px;">
+                        <i class="bi bi-patch-check me-2"></i>Jordan's #1 Property Inspection Platform
+                    </span>
+                </div>
+                <h1 style="font-size:52px;font-weight:700;line-height:1.15;color:#fff;margin-bottom:20px;">
                     Buy Your Property<br>
                     <span style="color:#EF9F27;">With Confidence</span>
                 </h1>
-                <p class="mb-4" style="color:#aaa;font-size:17px;line-height:1.7;">
+                <p style="color:#888;font-size:17px;line-height:1.8;margin-bottom:32px;max-width:480px;">
                     Connect with certified engineers for a professional inspection report before you sign anything.
                 </p>
-                <div class="d-flex flex-column gap-3">
 
-                    <form asp-controller="Home"
-                          asp-action="SearchEngineers"
-                          method="get"
-                          class="row g-2">
-
-                        <div class="col-md-5">
-                            <input type="text"
-                                   name="engineerName"
-                                   class="form-control form-control-lg"
-                                   placeholder="Engineer Name" />
+                <!-- Search Form -->
+                <div class="p-4 mb-4" style="background:#111;border:1px solid #222;border-radius:16px;">
+                    <p style="color:#666;font-size:12px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px;">Find an Engineer</p>
+                    <form asp-controller="Home" asp-action="SearchEngineers" method="get">
+                        <div class="row g-2">
+                            <div class="col-md-5">
+                                <input type="text" name="engineerName" class="form-control"
+                                       placeholder="Name or Specialization" style="border-radius:10px;" />
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="city" class="form-control"
+                                       placeholder="City (e.g. Amman)" style="border-radius:10px;" />
+                            </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn w-100"
+                                        style="background:#EF9F27;color:#111;font-weight:600;border-radius:10px;">
+                                    <i class="bi bi-search me-1"></i>Search
+                                </button>
+                            </div>
                         </div>
-
-                        <div class="col-md-4">
-                            <input type="text"
-                                   name="city"
-                                   class="form-control form-control-lg"
-                                   placeholder="City" />
-                        </div>
-
-                        <div class="col-md-3">
-                            <button type="submit"
-                                    class="btn btn-primary-custom btn-lg w-100">
-                                <i class="bi bi-search me-2"></i>Search
-                            </button>
-                        </div>
-
                     </form>
-
-                    @if (User.Identity != null && !User.Identity.IsAuthenticated)
-                    {
-                        <a asp-area="Identity"
-                           asp-page="/Account/Register"
-                           class="btn btn-outline-custom btn-lg px-4 align-self-start">
-                            Get Started
-                        </a>
-                    }
-                    else
-                    {
-                        <a asp-area="Identity"
-                           hidden
-                           asp-page="/Account/Register"
-                           class="btn btn-outline-custom btn-lg px-4">
-                            Get Started
-                        </a>
-                    }
-
                 </div>
 
-                <div class="d-flex gap-4 mt-5 flex-wrap">
+                @if (User.Identity != null && !User.Identity.IsAuthenticated)
+                {
+                    <a asp-area="Identity" asp-page="/Account/Register"
+                       class="btn btn-outline-secondary btn-lg px-4">
+                        Get Started Free
+                    </a>
+                }
+
+                <!-- Stats -->
+                <div class="d-flex gap-4 mt-4 flex-wrap">
                     <div>
-                        <h4 class="fw-bold mb-0" style="color:#EF9F27;">100+</h4>
-                        <small style="color:#666;">Certified Engineers</small>
+                        <div style="font-size:26px;font-weight:700;color:#EF9F27;">100+</div>
+                        <small style="color:#555;">Certified Engineers</small>
                     </div>
-                    <div>
-                        <h4 class="fw-bold mb-0" style="color:#EF9F27;">500+</h4>
-                        <small style="color:#666;">Reports Issued</small>
+                    <div style="border-left:1px solid #222;padding-left:20px;">
+                        <div style="font-size:26px;font-weight:700;color:#EF9F27;">500+</div>
+                        <small style="color:#555;">Reports Issued</small>
                     </div>
-                    <div>
-                        <h4 class="fw-bold mb-0" style="color:#EF9F27;">4.9★</h4>
-                        <small style="color:#666;">Average Rating</small>
+                    <div style="border-left:1px solid #222;padding-left:20px;">
+                        <div style="font-size:26px;font-weight:700;color:#EF9F27;">4.9★</div>
+                        <small style="color:#555;">Average Rating</small>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 text-center">
-                <img src="~/images/Hero2.png" alt="Property Inspection"
-                     class="img-fluid rounded-3 shadow"
-                     style="max-height:420px;object-fit:cover;border:1px solid #222;" />
+
+            <!-- Right -->
+            <div class="col-lg-6">
+                <div style="position:relative;">
+                    <img src="~/images/Hero2.png" alt="Property Inspection"
+                         class="img-fluid rounded-3"
+                         style="width:100%;max-height:480px;object-fit:cover;border:1px solid #222;border-radius:20px!important;" />
+                    <!-- Floating Badge -->
+                    <div style="position:absolute;bottom:24px;left:24px;background:rgba(10,10,10,.9);border:1px solid rgba(239,159,39,.3);border-radius:12px;padding:12px 18px;backdrop-filter:blur(10px);">
+                        <div style="color:#EF9F27;font-weight:600;font-size:14px;"><i class="bi bi-file-check me-2"></i>Report Ready</div>
+                        <div style="color:#666;font-size:12px;">Detailed PDF within 48 hours</div>
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
 </div>
 
-<div id="how-it-works" class="py-5" style="background-color: #111;">
+<!-- How It Works -->
+<div style="background:#111;padding:80px 0;">
     <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-white" style="font-size:36px;">How It <span style="color:#EF9F27;">Works</span></h2>
+            <p style="color:#666;margin-top:10px;">Simple steps to protect your investment</p>
+        </div>
 
-        <h2 class="text-center fw-bold mb-5 text-white">How It Works</h2>
-
-        <div class="row mb-5 justify-content-center">
-            <div class="col-lg-10">
-                <div class="video-banner-container shadow-lg" style="position: relative; width: 100%; height: 430px; overflow: hidden; border-radius: 15px; border: 2px solid #222;">
+        <!-- Video -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-9">
+                <div style="position:relative;width:100%;height:420px;overflow:hidden;border-radius:18px;border:1px solid #222;">
                     <video autoplay muted loop playsinline
-                           style="position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; transform: translate(-50%, -50%); object-fit: cover; z-index: 0;">
-                        <source src="~/images/Video.mp4" type="video/mp4">
+                           style="position:absolute;top:50%;left:50%;width:100%;height:100%;transform:translate(-50%,-50%);object-fit:cover;z-index:0;">
+                        <source src="~/images/VideoIne.mp4" type="video/mp4">
                     </video>
-                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.2); z-index: 1;"></div>
+                    <div style="position:absolute;inset:0;background:rgba(0,0,0,.15);z-index:1;"></div>
                 </div>
             </div>
         </div>
 
+        <!-- Steps -->
         <div class="row g-4 text-center">
-
-            <div class="col-md-3">
-                <div class="p-4 rounded-3 h-100" style="background: #1a1a1a; border: 1px solid #222; transition: transform 0.2s ease, border-color 0.2s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#EF9F27'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#222'">
-                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                         style="width:70px;height:70px;background:rgba(239,159,39,.1);border:1px solid rgba(239,159,39,.3);">
-                        <i class="bi bi-map fs-2 text-warning"></i>
+            @{
+                var steps = new[] {
+                        new { Num = "1", Icon = "bi-map", Title = "Enter Property", Desc = "Add the property address and details you want inspected." },
+                        new { Num = "2", Icon = "bi-person-check", Title = "Choose Engineer", Desc = "Browse certified engineers with real ratings and fair prices." },
+                        new { Num = "3", Icon = "bi-house-check", Title = "Get Inspected", Desc = "The engineer visits the property and documents everything." },
+                        new { Num = "4", Icon = "bi-file-earmark-check", Title = "Receive Report", Desc = "Get a certified PDF report within 48 hours." }
+                        };
+            }
+            @foreach (var step in steps)
+            {
+                <div class="col-md-3">
+                    <div class="p-4 h-100"
+                         style="background:#1a1a1a;border:1px solid #222;border-radius:16px;transition:all .3s;"
+                         onmouseover="this.style.borderColor='#EF9F27';this.style.transform='translateY(-6px)'"
+                         onmouseout="this.style.borderColor='#222';this.style.transform='translateY(0)'">
+                        <div style="width:56px;height:56px;background:rgba(239,159,39,.1);border:1px solid rgba(239,159,39,.3);border-radius:14px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;">
+                            <i class="bi @step.Icon" style="color:#EF9F27;font-size:22px;"></i>
+                        </div>
+                        <div style="color:#EF9F27;font-size:12px;font-weight:600;margin-bottom:6px;">STEP @step.Num</div>
+                        <h5 class="fw-bold text-white mb-2">@step.Title</h5>
+                        <p style="color:#666;font-size:14px;margin:0;">@step.Desc</p>
                     </div>
-                    <h5 class="fw-bold text-white">1. Enter Property</h5>
-                    <p class="text-muted" style="color: #aaa !important;">Add the property address and details you want inspected.</p>
                 </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="p-4 rounded-3 h-100" style="background: #1a1a1a; border: 1px solid #222; transition: transform 0.2s ease, border-color 0.2s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#EF9F27'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#222'">
-                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                         style="width:70px;height:70px;background:rgba(239,159,39,.1);border:1px solid rgba(239,159,39,.3);">
-                        <i class="bi bi-person-check fs-2 text-warning"></i>
-                    </div>
-                    <h5 class="fw-bold text-white">2. Choose Engineer</h5>
-                    <p class="text-muted" style="color: #aaa !important;">Browse certified engineers with real ratings and fair prices.</p>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="p-4 rounded-3 h-100" style="background: #1a1a1a; border: 1px solid #222; transition: transform 0.2s ease, border-color 0.2s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#EF9F27'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#222'">
-                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                         style="width:70px;height:70px;background:rgba(239,159,39,.1);border:1px solid rgba(239,159,39,.3);">
-                        <i class="bi bi-house-check fs-2 text-warning"></i>
-                    </div>
-                    <h5 class="fw-bold text-white">3. Get Inspected</h5>
-                    <p class="text-muted" style="color: #aaa !important;">The engineer visits the property and documents everything.</p>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="p-4 rounded-3 h-100" style="background: #1a1a1a; border: 1px solid #222; transition: transform 0.2s ease, border-color 0.2s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.borderColor='#EF9F27'" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#222'">
-                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                         style="width:70px;height:70px;background:rgba(239,159,39,.1);border:1px solid rgba(239,159,39,.3);">
-                        <i class="bi bi-file-earmark-check fs-2 text-warning"></i>
-                    </div>
-                    <h5 class="fw-bold text-white">4. Receive Report</h5>
-                    <p class="text-muted" style="color: #aaa !important;">Get a certified PDF report within 48 hours.</p>
-                </div>
-            </div>
-
+            }
         </div>
     </div>
 </div>
 
-<div style="background:#0a0a0a;border-top:1px solid #222;border-bottom:1px solid #222;" class="py-5">
+<!-- Why PropCheck -->
+<div style="background:#0a0a0a;border-top:1px solid #1a1a1a;padding:80px 0;">
     <div class="container">
-        <h2 class="text-center fw-bold mb-5 text-white">Why PropCheck?</h2>
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-white" style="font-size:36px;">Why <span style="color:#EF9F27;">PropCheck?</span></h2>
+        </div>
         <div class="row g-4">
             <div class="col-md-4">
-                <div class="card h-100 p-3" style="background: transparent; border:1px solid rgba(239,159,39,.2) !important;">
-                    <div class="card-body">
-                        <i class="bi bi-shield-check fs-2 text-warning mb-3 d-block"></i>
-                        <h5 class="fw-bold text-white">Certified Engineers</h5>
-                        <p class="text-muted" style="color: #aaa !important;">All engineers are verified professionals with proven track records.</p>
+                <div class="p-4 h-100" style="border:1px solid rgba(239,159,39,.15);border-radius:16px;background:rgba(239,159,39,.02);">
+                    <div style="width:48px;height:48px;background:rgba(239,159,39,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+                        <i class="bi bi-shield-check" style="color:#EF9F27;font-size:20px;"></i>
                     </div>
+                    <h5 class="fw-bold text-white mb-2">Certified Engineers</h5>
+                    <p style="color:#666;font-size:14px;margin:0;">All engineers are verified professionals with proven track records and official licenses.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card h-100 p-3" style="background: transparent; border:1px solid rgba(239,159,39,.2) !important;">
-                    <div class="card-body">
-                        <i class="bi bi-file-pdf fs-2 text-warning mb-3 d-block"></i>
-                        <h5 class="fw-bold text-white">Documented Report</h5>
-                        <p class="text-muted" style="color: #aaa !important;">Receive a detailed PDF report with photos covering every aspect of the property.</p>
+                <div class="p-4 h-100" style="border:1px solid rgba(239,159,39,.15);border-radius:16px;background:rgba(239,159,39,.02);">
+                    <div style="width:48px;height:48px;background:rgba(239,159,39,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+                        <i class="bi bi-file-pdf" style="color:#EF9F27;font-size:20px;"></i>
                     </div>
+                    <h5 class="fw-bold text-white mb-2">Documented Report</h5>
+                    <p style="color:#666;font-size:14px;margin:0;">Receive a detailed PDF report with photos covering every aspect of the property.</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card h-100 p-3" style="background: transparent; border:1px solid rgba(239,159,39,.2) !important;">
-                    <div class="card-body">
-                        <i class="bi bi-chat-dots fs-2 text-warning mb-3 d-block"></i>
-                        <h5 class="fw-bold text-white">Direct Communication</h5>
-                        <p class="text-muted" style="color: #aaa !important;">Chat directly with your engineer before and after the inspection.</p>
+                <div class="p-4 h-100" style="border:1px solid rgba(239,159,39,.15);border-radius:16px;background:rgba(239,159,39,.02);">
+                    <div style="width:48px;height:48px;background:rgba(239,159,39,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+                        <i class="bi bi-chat-dots" style="color:#EF9F27;font-size:20px;"></i>
                     </div>
+                    <h5 class="fw-bold text-white mb-2">Direct Communication</h5>
+                    <p style="color:#666;font-size:14px;margin:0;">Chat directly with your engineer before and after the inspection in real-time.</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div style="background:#111;" class="py-5">
+
+<!-- Top Engineers -->
+<div style="background:#111;padding:80px 0;">
     <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-white" style="font-size:36px;">Top Rated <span style="color:#EF9F27;">Engineers</span></h2>
+            <p style="color:#666;margin-top:10px;">Trusted by hundreds of property buyers</p>
+        </div>
 
-        <h2 class="text-center fw-bold mb-4 text-white">
-            Top Rated Engineers
-        </h2>
-
-        <div class="row g-3 mb-5">
-
+        <div class="row g-4">
             @foreach (var engineer in (List<MasterBeasProject.Models.EngineerProfile>)ViewBag.TopEngineers)
             {
                 <div class="col-lg-3 col-md-6">
+                    <div class="p-4 text-center h-100"
+                         style="background:#1a1a1a;border:1px solid #222;border-radius:16px;transition:all .3s;"
+                         onmouseover="this.style.borderColor='rgba(239,159,39,.4)';this.style.transform='translateY(-4px)'"
+                         onmouseout="this.style.borderColor='#222';this.style.transform='translateY(0)'">
+                        <img src="@(string.IsNullOrEmpty(engineer.User.ProfileImageUrl) ? "/images/default-user.png" : engineer.User.ProfileImageUrl)"
+                             class="rounded-circle mb-3"
+                             style="width:80px;height:80px;object-fit:cover;border:3px solid #EF9F27;" />
 
-                    <div class="card h-100 text-center"
-                         style="background:#1a1a1a;border:1px solid #222;">
+                        <h6 class="fw-bold text-white mb-1">@engineer.User.FullName</h6>
 
-                        <div class="card-body p-3">
+                        <span style="background:rgba(239,159,39,.1);color:#EF9F27;border:1px solid rgba(239,159,39,.2);padding:2px 10px;border-radius:20px;font-size:12px;">
+                            @engineer.Specialization
+                        </span>
 
-                            <img src="@(engineer.User.ProfileImageUrl ?? "/images/default-user.png")"
-                                 class="rounded-circle mb-2"
-                                 width="70"
-                                 height="70"
-                                 style="object-fit:cover;" />
-
-                            <h6 class="text-white fw-bold mb-1">
-                                @engineer.User.FullName
-                            </h6>
-
-                            <p class="text-warning mb-1">
-                                @engineer.Specialization
-                            </p>
-
-                            <p class="text-muted small mb-1">
-                                @(engineer.City ?? "Jordan")
-                            </p>
-
-                            <p class="text-warning mb-2">
-                                ⭐ @engineer.AverageRating
-                            </p>
-
-                            <a asp-controller="Engineer"
-                               asp-action="Details"
-                               asp-route-id="@engineer.Id"
-                               class="btn btn-sm btn-primary-custom">
-                                View Profile
-                            </a>
-
+                        <div class="mt-2 mb-1" style="color:#666;font-size:13px;">
+                            <i class="bi bi-geo-alt me-1" style="color:#EF9F27;"></i>@(engineer.City ?? "Jordan")
                         </div>
 
-                    </div>
+                        <div class="mb-3" style="color:#EF9F27;font-weight:600;">
+                            <i class="bi bi-star-fill me-1" style="font-size:12px;"></i>@engineer.AverageRating.ToString("0.0")
+                            <span style="color:#555;font-size:12px;">(@engineer.TotalReviews)</span>
+                        </div>
 
+                        <a asp-controller="Engineer" asp-action="Details" asp-route-id="@engineer.Id"
+                           class="btn btn-sm w-100"
+                           style="background:#EF9F27;color:#111;font-weight:600;border-radius:10px;">
+                            View Profile
+                        </a>
+                    </div>
                 </div>
             }
-
         </div>
 
-        <div class="text-center">
-            <h2 class="fw-bold mb-3 text-white">
-                Ready to inspect your property?
-            </h2>
-
-            <p class="text-muted mb-4" style="color:#aaa !important;">
-                Join hundreds of smart buyers who made informed decisions with PropCheck.
-            </p>
-
-            <a asp-controller="Engineer"
-               asp-action="Index"
-               class="btn btn-lg px-5 btn-primary-custom">
-                Find an Engineer Now
+        <!-- CTA -->
+        <div class="text-center mt-5 pt-4" style="border-top:1px solid #1a1a1a;">
+            <h3 class="fw-bold text-white mb-2">Ready to inspect your property?</h3>
+            <p style="color:#666;margin-bottom:24px;">Join hundreds of smart buyers who made informed decisions with PropCheck.</p>
+            <a asp-controller="Engineer" asp-action="Index"
+               class="btn btn-lg px-5"
+               style="background:#EF9F27;color:#111;font-weight:600;border-radius:12px;">
+                <i class="bi bi-search me-2"></i>Find an Engineer Now
             </a>
         </div>
-
     </div>
 </div>

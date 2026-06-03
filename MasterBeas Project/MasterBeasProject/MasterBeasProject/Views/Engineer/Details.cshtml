@@ -56,6 +56,18 @@
                         <i class="bi bi-cash" style="color:#EF9F27;"></i>
                         <span>@Model.InspectionPrice JD per inspection</span>
                     </div>
+                    @if (!string.IsNullOrEmpty(Model.City))
+                    {
+                        <div class="d-flex align-items-center gap-2" style="color:#aaa;font-size:14px;">
+                            <i class="bi bi-geo-alt" style="color:#EF9F27;"></i>
+                            <span>@Model.City</span>
+                        </div>
+                    }
+                    <div class="d-flex align-items-center gap-2" style="color:#aaa;font-size:14px;">
+                        <i class="bi bi-file-earmark-check" style="color:#EF9F27;"></i>
+                        <span>@Model.Bookings.Count(b => b.Status == MasterBeasProject.Models.BookingStatus.Completed) Reports Completed</span>
+                    </div>
+
                     @if (!string.IsNullOrEmpty(Model.LicenseNumber))
                     {
                         <div class="d-flex align-items-center gap-2" style="color:#aaa;font-size:14px;">

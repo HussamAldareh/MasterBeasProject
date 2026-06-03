@@ -56,6 +56,8 @@ namespace MasterBeasProject.Controllers
                 .Include(e => e.User)
                 .Include(e => e.Reviews)
                     .ThenInclude(r => r.Client)
+                        .Include(e => e.Bookings)
+
                 .FirstOrDefaultAsync(e => e.Id == id);
 
             if (engineer == null)
