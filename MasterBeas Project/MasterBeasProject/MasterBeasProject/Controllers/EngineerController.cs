@@ -380,5 +380,51 @@ namespace MasterBeasProject.Controllers
         }
 
 
+        [Authorize(Roles = "Engineer")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SetFinalPrice(int bookingId, decimal finalPrice)
+        {
+            var userId = _userManager.GetUserId(User);
+
+            var profile = await _context.EngineerProfiles
+                .FirstOrDefaultAsync(e => e.UserId == userId);
+
+            if (profile == null)
+                return Unauthorized();
+
+            var booking = await _context.Bookings
+                .FirstOrDefaultAsync(b =>
+                    b.Id == bookingId &&
+                    b.EngineerProfileId == profile.Id);
+
+            if (booking == null)
+                return NotFound();
+
+            booking.FinalPrice = finalPrice;
+            booking.IsPriceApproved = false;
+
+            await _context.SaveChangesAsync();
+
+            // إشعار للعميل
+            _context.Notifications.Add(new Notification
+            {
+                UserId = booking.ClientId,
+                Title = "Final Price Submitted",
+                Body = $"The engineer submitted a final inspection price of {finalPrice} JD.",
+                Type = NotificationType.FinalPriceSubmitted,
+                Link = $"/Booking/Details/{booking.Id}"
+            });
+
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Final price sent successfully.";
+
+            return RedirectToAction("Dashboard");
+        }
+
+
+
+
     }
 }

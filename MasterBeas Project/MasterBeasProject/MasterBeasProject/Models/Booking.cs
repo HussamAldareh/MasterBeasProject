@@ -68,6 +68,13 @@ namespace MasterBeasProject.Models
 
         public PropertyDetails? PropertyDetails { get; set; }
         public InspectionReport? InspectionReport { get; set; }
+
+
+        [Column(TypeName = "decimal(10,2)")]
+        [Display(Name = "Final Price")]
+        public decimal? FinalPrice { get; set; }
+
+        public bool IsPriceApproved { get; set; } = false;
         public Review? Review { get; set; }
         public ICollection<ChatMessage> ChatMessages { get; set; } = new List<ChatMessage>();
     }

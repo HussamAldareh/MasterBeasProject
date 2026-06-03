@@ -222,5 +222,57 @@ namespace MasterBeasProject.Controllers
             TempData["Success"] = "Booking cancelled successfully.";
             return RedirectToAction("MyBookings");
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ApprovePrice(int bookingId)
+        {
+            var booking = await _context.Bookings
+                .Include(b => b.EngineerProfile)
+                .FirstOrDefaultAsync(b => b.Id == bookingId);
+
+            if (booking == null)
+                return NotFound();
+
+            booking.Price = booking.FinalPrice ?? booking.Price;
+            booking.IsPriceApproved = true;
+            booking.Status = BookingStatus.Accepted;
+
+            var notification = new Notification
+            {
+                UserId = booking.EngineerProfile.UserId,
+                Title = "Price Approved",
+                Body = "The client approved your proposed price.",
+                Type = NotificationType.NewBooking,
+                Link = "/Engineer/Dashboard"
+            };
+
+            _context.Notifications.Add(notification);
+
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Price approved successfully.";
+
+            return RedirectToAction("Details", new { id = bookingId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RejectPrice(int bookingId)
+        {
+            var booking = await _context.Bookings
+                .FirstOrDefaultAsync(b => b.Id == bookingId);
+
+            if (booking == null)
+                return NotFound();
+
+            booking.Status = BookingStatus.Cancelled;
+
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Price rejected.";
+
+            return RedirectToAction("Details", new { id = bookingId });
+        }
     }
 }

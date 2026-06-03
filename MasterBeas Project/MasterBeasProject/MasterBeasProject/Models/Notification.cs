@@ -9,7 +9,9 @@ namespace MasterBeasProject.Models
         BookingRejected,
         ReportReady,
         NewMessage,
-        NewBooking
+        NewBooking,
+        FinalPriceSubmitted
+
     }
 
     public class Notification

@@ -67,7 +67,9 @@
                     </div>
                     <div class="d-flex gap-2" style="font-size:13px;">
                         <i class="bi bi-cash mt-1" style="color:#EF9F27;flex-shrink:0;"></i>
-                        <span style="color:#EF9F27;font-weight:600;">@Model.Price JD</span>
+                        <span style="color:#EF9F27;font-weight:600;">
+                            @(Model.FinalPrice ?? Model.Price) JD
+                        </span>
                     </div>
                     @if (!string.IsNullOrEmpty(Model.Notes))
                     {
@@ -98,6 +100,7 @@
                                 <div style="color:#888;font-size:11px;">Area</div>
                                 <div style="color:white;font-size:13px;font-weight:500;">@Model.PropertyDetails.Area m²</div>
                             </div>
+
                         </div>
                         <div class="col-6">
                             <div class="p-2 text-center" style="background:#1a1a1a;border-radius:8px;">
@@ -132,6 +135,42 @@
                 </div>
             }
 
+            @if (isClient &&
+                        Model.FinalPrice != null &&
+                        !Model.IsPriceApproved &&
+                        Model.Status == BookingStatus.Pending)
+            {
+                <div class="card mt-4 border-warning">
+                    <div class="card-body">
+                        <h5 class="text-warning">Final Price Offer</h5>
+
+                        <h3>@Model.FinalPrice JD</h3>
+
+                        <p>
+                            The engineer has reviewed your request and proposed this final price.
+                        </p>
+
+                        <form asp-action="ApprovePrice" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="bookingId" value="@Model.Id" />
+
+                            <button class="btn btn-success">
+                                Approve Price
+                            </button>
+                        </form>
+
+                        <form asp-action="RejectPrice" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="bookingId" value="@Model.Id" />
+
+                            <button class="btn btn-danger">
+                                Reject Price
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+
             <!-- Map -->
             @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
             {
@@ -155,7 +194,7 @@
                     </p>
                     <a asp-controller="Payment" asp-action="Checkout" asp-route-bookingId="@Model.Id"
                        class="btn btn-primary w-100">
-                        <i class="bi bi-credit-card me-2"></i>Pay Now — @Model.Price JD
+                        <i class="bi bi-credit-card me-2"></i>Pay Now — @(Model.FinalPrice ?? Model.Price) JD
                     </a>
                 </div>
             }
